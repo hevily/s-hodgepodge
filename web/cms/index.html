@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <script src="resources/easyui/jquery.min.js"></script>
+    <script src="resources/easyui/jquery.easyui.min.js"></script>
+    <script src="resources/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <link href="resources/easyui/themes/icon.css" rel="stylesheet" />
+    <link href="resources/easyui/themes/default/easyui.css" rel="stylesheet" />
+    <script src="resources/js/layout.js" charset="gb2312"></script>
+    <link href="resources/css/layout.css" rel="stylesheet" />
+</head>
+<body class="easyui-layout">
+    <div id="divHeader" data-options="region:'north',border:false,href:'header.html'">
+    </div>
+    <div id="divMenuBar" data-options="region:'west',split:true,collapsed:false,title:'菜单栏',href:'menu.html'">
+    </div>
+    <div id="divFooter" data-options="region:'south',border:false,href:'footer.html'">
+    </div>
+    <div id="divContent" data-options="region:'center',title:false">
+        <div id="tabs" class="easyui-tabs" data-options="fit:true,border:false">
+            <div id="divTitleBar" title="公告栏" data-options="href:'bulletinboard.html'">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

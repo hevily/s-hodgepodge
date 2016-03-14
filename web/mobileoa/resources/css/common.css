@@ -1,0 +1,29 @@
+﻿/* 全局样式 */
+body { -webkit-user-select: initial; background-color: #fff; word-break: break-all; word-wrap: break-word; }
+a { color: #2a70be; }
+
+@media screen and (max-width: 330px) {
+    body { font-size: 18px; }
+}
+
+@media screen and (min-width: 330px) and (max-width: 600px) {
+    body { font-size: 20px; }
+}
+
+@media screen and (min-width: 600px) and (max-width: 900px) {
+    body { font-size: 22px; }
+}
+
+@media screen and (min-width: 900px) {
+    body { font-size: 24px; }
+}
+
+.oa-tabs-left { font-size: 0.9em; position: absolute; left: 1.65em; }
+
+/* 重写 frozen 的样式 */
+.ui-icon-return { font-size: 1.6em; line-height: 1.5em; }
+.ui-tab-nav li.current { color: #2a70be; border-bottom: 0.1em #6f9ddc solid; }
+.ui-header { top: 0; height: 2.5em; line-height: 2.5em; padding-right: 0.45em; background-color: #6f9ddc; }
+.ui-header h1 { font-size: 1.4em; }
+.ui-btn { font-size: 0.8em; padding-left: 0.5em; padding-right: 0.5em; height: 2.0em; line-height: 2.0em; color: #2a70be; }
+.ui-btn-s { font-size: 0.8em; padding-left: 0.3em; padding-right: 0.3em; height: 2.2em; line-height: 2.2em; width: 3.5em; color: #2a70be; border: 1px solid #cacccd; }

@@ -1,0 +1,595 @@
+﻿<html>
+<head>
+    <title>办公自动化</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#6f9ddc">
+    <!-- 页面的编码方式 -->
+    <meta charset="utf-8">
+    <!-- 优先使用最新版本 IE 和 Chrome -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <!-- 搜索引擎优化，页面关键词，每个网页应具有描述该网页内容的一组唯一的关键字 -->
+    <meta name="keywords" content="">
+    <!-- 搜索引擎优化，页面描述，每个网页都应有一个不超过 150 个字符且能准确反映网页内容的描述标签 -->
+    <meta name="description" content="">
+    <!-- 优化移动浏览器的显示，缩放比例默认为1，不允许手动缩放。如果不是响应式网站，不要使用initial-scale或者禁用缩放。 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- 使用 webkit 内核渲染网站 -->
+    <meta name="renderer" content="webkit">
+    <!-- 禁止百度转码 -->
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <!-- 添加到主屏后的图标 -->
+    <link rel="icon" type="image/png" href="assets/i/favicon.png">
+    <!-- 添加到主屏后-启用 WebApp 全屏模式(Android) -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <!-- 添加到主屏后的图标(Android) -->
+    <link rel="icon" sizes="192x192" href="assets/i/app-icon72x72@2x.png">
+    <!-- 添加到主屏后-启用 WebApp 全屏模式(iOS) -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- 添加到主屏后-设置状态栏的背景颜色(iOS) -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!-- 添加到主屏后的标题(iOS) -->
+    <meta name="apple-mobile-web-app-title" content="南航办公自动化">
+    <!-- 添加到主屏后的图标(iOS) -->
+    <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+    <!-- 添加到主屏后的图标(win8) -->
+    <meta name="msapplication-TileImage" content="assets/i/app-icon72x72@2x.png">
+    <!-- 添加到主屏后-设置状态栏的背景颜色(win8) -->
+    <meta name="msapplication-TileColor" content="#0e90d2">
+    <!-- 关闭移动端手机号码识别(iOS) -->
+    <meta name="format-detection" content="telephone=no">
+    <!-- 关闭移动端邮箱识别(Android) -->
+    <meta name="format-detection" content="email=no">
+    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+    <!--  <link rel="canonical" href="http://www.example.com/">  -->
+    <link rel="stylesheet" href="resources/css/third-party/frozen.css">
+    <link rel="stylesheet" href="resources/css/common.css" />
+    <link rel="stylesheet" href="resources/css/detail.css">
+    <script src="resources/js/third-party/zepto.min.js"></script>
+    <script src="resources/js/third-party/frozen.js"></script>
+    <script src="resources/js/third-party/tab.js"></script>
+    <script src="resources/js/third-party/iscroll-probe.js"></script>
+    <script src="resources/js/detail.js"></script>
+</head>
+<body onload="">
+
+    <div class="oa-tabs" id="divOaTab">
+
+        <header class="ui-header ui-header-positive ui-border-b">
+            <i class="ui-icon-return" id="iFormReturn"></i>
+            <div class="oa-tabs-left" id="divFormReturn">待办</div>
+            <h1></h1>
+            <button id="btnOneKey" class="ui-btn" type="button">一键办公</button>
+            <button id="btnSend" class="ui-btn" type="button">发送</button>
+            <button id="btnPass" class="ui-btn" type="button">传阅</button>
+        </header>
+
+        <section class="oa-tabs-content" id="sOaTabsContent">
+            <ul class="current">
+                <li>
+                    <section class="oa-form" id="sOaForm">
+                        <div class="ui-form ui-border-t">
+                            <div class="ui-form-item ui-form-item-show ui-border-b">
+                                <div class="oa-form-titile">
+                                    签报
+                                </div>
+                            </div>
+                            <div class="ui-form-item ui-form-item-show ui-border-b ">
+                                <label>标题</label>
+                                <div class="oa-form-value">
+                                    货运部关于修建进港货运平台的请示
+                                </div>
+                            </div>
+                            <div class="ui-form-item ui-form-item-show ui-border-b ">
+                                <label>文档号</label>
+                                <div class="oa-form-value">
+                                    16030800012
+                                </div>
+                            </div>
+                            <div class="ui-form-item ui-form-item-show ui-border-b ">
+                                <label>拟稿人</label>
+                                <div class="oa-form-value">
+                                    欧弟
+                                </div>
+                            </div>
+                            <div class="ui-form-item ui-form-item-show ui-border-b ">
+                                <label>上报日期</label>
+                                <div class="oa-form-value">
+                                    2016-03-08
+                                </div>
+                            </div>
+                            <div class="ui-form-item ui-form-item-show ui-border-b ">
+                                <label>紧急程度</label>
+                                <div class="oa-form-value">
+                                    特急
+                                </div>
+                            </div>
+                            <div class="ui-form-item ui-form-item-show ui-border-b ">
+                                <label>呈送单位</label>
+                                <div class="oa-form-value">
+                                    股份公司信息中心管理研发部
+                                </div>
+                            </div>
+                            <div class="ui-form-item ui-form-item-show ui-border-b ">
+                                <label>电话</label>
+                                <div class="oa-form-value">
+                                    33665
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </li>
+            </ul>
+
+            <ul>
+                <li>
+                    <section class="oa-content" id="sOaContent">
+                        <div class="oa-content-doc" id="divOaContentDoc">
+                            <div>
+                                <div>
+                                    <table cellspacing="0" cellpadding="0" style="border-collapse: collapse; margin-left: 0pt; width: 100%">
+                                        <tbody>
+                                            <tr style="height: 36.85pt">
+                                                <td style="vertical-align: middle">
+                                                    <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="word-break: break-all; color: #ff0000; font-family: '方正小标宋简体'; font-size: 40pt; font-weight: bold">签      报</span></p>
+                                                </td>
+                                            </tr>
+                                            <tr style="height: 51.65pt">
+                                                <td style="vertical-align: top">
+                                                    <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="word-break: break-all; font-family: 'Times New Roman'; font-size: 16pt">&nbsp;</span></p>
+                                                    <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="word-break: break-all; font-family: '方正黑体_GBK'; font-size: 16pt">2000年第0号</span></p>
+                                                </td>
+                                            </tr>
+                                            <tr style="height: 20.85pt">
+                                                <td style="vertical-align: bottom">
+                                                    <p style="margin: 0pt; orphans: 0; text-align: justify; text-indent: 15.25pt; widows: 0"><span style="word-break: break-all; font-family: '方正仿宋_GBK'; font-size: 16pt">请在此输入呈报单位</span><span style="word-break: break-all; font-family: '仿宋_GB2312'; font-size: 16pt">                  </span><span style="word-break: break-all; font-family: '方正仿宋_GBK'; font-size: 16pt">2000年10月28日</span></p>
+                                                </td>
+                                            </tr>
+                                            <tr style="height: 2.85pt">
+                                                <td style="border-bottom-color: #ff0000; border-bottom-style: solid; border-bottom-width: 2.25pt; vertical-align: top">
+                                                    <p style="line-height: 6pt; margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="word-break: break-all; font-family: 'Times New Roman'; font-size: 16pt">&nbsp;</span></p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <p style="margin: 0pt 18pt 0pt 17.5pt; orphans: 0; text-align: right; widows: 0"><span style="word-break: break-all; font-family: '宋体'; font-size: 14pt">－ </span><span style="word-break: break-all; font-family: '宋体'; font-size: 14pt">1</span><span style="word-break: break-all; font-family: '宋体'; font-size: 14pt"> －</span></p>
+                                </div>
+                                <br style="clear: both; mso-break-type: section-break; page-break-before: auto">
+                                <div>
+                                    <p style="margin: 0pt; orphans: 0; text-align: justify; widows: 0"><span style="word-break: break-all; font-family: '华文中宋'; font-size: 16pt">&nbsp;</span></p>
+                                    <p style="margin: 0pt; orphans: 0; text-align: justify; widows: 0"><span style="word-break: break-all; font-family: '华文中宋'; font-size: 16pt">&nbsp;</span></p>
+                                    <p style="line-height: 38pt; margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="word-break: break-all; font-family: '方正小标宋简体'; font-size: 22pt">公文标题</span></p>
+                                    <p style="line-height: 28pt; margin: 0pt; orphans: 0; text-align: justify; widows: 0"><span style="word-break: break-all; font-family: '华文中宋'; font-size: 16pt">&nbsp;</span></p>
+                                    <p style="line-height: 28pt; margin: 0pt; orphans: 0; text-align: justify; widows: 0"><a name="Text1"></a><span style="word-break: break-all; font-family: '方正仿宋_GBK'; font-size: 16pt">公文接收人或单位：</span></p>
+                                    <p style="line-height: 28pt; margin: 0pt; orphans: 0; text-align: justify; text-indent: 31.5pt; widows: 0"><span style="word-break: break-all; font-family: '华文中宋'; font-size: 16pt">×××××××××××××××××××××××××××××××××××××××××××××××××××××××××××</span><span style="word-break: break-all; font-family: '方正仿宋_GBK'; font-size: 16pt">（请输入正文内容）。</span></p>
+                                    <p style="line-height: 28pt; margin: 0pt; orphans: 0; text-align: justify; widows: 0"><span style="word-break: break-all; font-family: '方正仿宋_GBK'; font-size: 16pt">&nbsp;</span></p>
+                                    <p style="line-height: 28pt; margin: 0pt 0pt 0pt 92.35pt; orphans: 0; text-align: justify; text-indent: -60.95pt; widows: 0"><span style="word-break: break-all; font-family: '方正仿宋_GBK'; font-size: 16pt">附件：1. </span><span style="word-break: break-all; font-family: '华文中宋'; font-size: 16pt">×××××××××××××××××××××</span></p>
+                                    <p style="line-height: 28pt; margin: 0pt; orphans: 0; text-align: justify; text-indent: 99.05pt; widows: 0"><span style="word-break: break-all; font-family: '华文中宋'; font-size: 16pt">×××</span></p>
+                                    <p style="line-height: 28pt; margin: 0pt; orphans: 0; text-align: justify; text-indent: 77.75pt; widows: 0"><span style="word-break: break-all; font-family: '方正仿宋_GBK'; font-size: 16pt">2. </span><span style="word-break: break-all; font-family: '华文中宋'; font-size: 16pt">×××××××</span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="oa-content-pdf" id="divOaContentPdf" style="display: none;"></div>
+                    </section>
+                </li>
+            </ul>
+
+            <ul>
+                <li>
+                    <section class="oa-attachment" id="sOaAttachment">
+                        <div class="ui-form ui-border-t" id="divAttachment">
+                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                <a href="#">测试附件1.txt</a>
+                            </div>
+                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                <a href="#">测试附件2.jpg</a>
+                            </div>
+                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                <a href="#">测试附件3.ceb</a>
+                            </div>
+                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                <a href="#">测试附件4.pdf</a>
+                            </div>
+                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                <a href="#">测试附件5.doc</a>
+                            </div>
+                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                <a href="#">测试附件6.ppt</a>
+                            </div>
+                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                <a href="#">测试附件7.xls</a>
+                            </div>
+                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                <a href="#">测试附件8.mp3</a>
+                            </div>
+                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                <a href="#">测试附件9.mp4</a>
+                            </div>
+                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                <a href="#">测试附件10.avi</a>
+                            </div>
+                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                <a href="#">测试附件11.txt</a>
+                            </div>
+                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                <a href="#">测试附件12.jpg</a>
+                            </div>
+                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                <a href="#">测试附件13.ceb</a>
+                            </div>
+                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                <a href="#">测试附件14.pdf</a>
+                            </div>
+                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                <a href="#">测试附件15.doc</a>
+                            </div>
+                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                <a href="#">测试附件16.ppt</a>
+                            </div>
+                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                <a href="#">测试附件17.xls</a>
+                            </div>
+                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                <a href="#">测试附件18.mp3</a>
+                            </div>
+                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                <a href="#">测试附件19.mp4</a>
+                            </div>
+                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                <a href="#">测试附件20.avi</a>
+                            </div>
+                        </div>
+                    </section>
+                </li>
+            </ul>
+
+            <ul>
+                <li>
+                    <section class="ui-tab oa-approval" id="sOaApproval">
+                        <div>
+                            <ul class="ui-tab-nav ui-border-b">
+                                <li class="current" id="liApprovalOpinionTab">批办意见</li>
+                                <li id="liApprovalProcessTab">批办过程</li>
+                                <li id="liApprovalYourOpinionTab">您的意见</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <ul class="ui-tab-content">
+                                <li class="oa-approval-content" id="liApprovalOpinion">
+                                    <div style="float: left; height: 100%; width: 100%;">
+                                        <ul class="ui-list ui-list-pure ui-border-tb">
+                                            <li class="ui-border-t">
+                                                <div class="oa-approval-opinion">
+                                                    <p>[其他意见] 孙权</p>
+                                                    <p>股份公司办公室</p>
+                                                    <p>同意。</p>
+                                                    <p>2016-02-04 16:49:14</p>
+                                                </div>
+                                            </li>
+                                            <li class="ui-border-t">
+                                                <div class="oa-approval-opinion">
+                                                    <p>[办公室意见] 诸葛</p>
+                                                    <p>股份公司办公室</p>
+                                                    <p>请公司领导传阅。</p>
+                                                    <p>2016-02-04 16:48:25</p>
+                                                </div>
+                                            </li>
+                                            <li class="ui-border-t">
+                                                <div class="oa-approval-opinion">
+                                                    <p>[公司领导批示] 张飞</p>
+                                                    <p>董事会</p>
+                                                    <p>请送各位常委阅。</p>
+                                                    <p>2016-02-04 16:49:14</p>
+                                                </div>
+                                            </li>
+                                            <li class="ui-border-t">
+                                                <div class="oa-approval-opinion">
+                                                    <p>[其他意见] 关羽</p>
+                                                    <p>股份公司信息中心办公室</p>
+                                                    <p>同意。</p>
+                                                    <p>2016-02-04 16:48:25</p>
+                                                </div>
+                                            </li>
+                                            <li class="ui-border-t">
+                                                <div class="oa-approval-opinion">
+                                                    <p>[其他意见] 刘备</p>
+                                                    <p>股份公司办公室</p>
+                                                    <p>同意。</p>
+                                                    <p>2016-02-04 16:49:14</p>
+                                                </div>
+                                            </li>
+                                            <li class="ui-border-t">
+                                                <div class="oa-approval-opinion">
+                                                    <p>[其他意见] 曹操</p>
+                                                    <p>股份公司信息中心办公室</p>
+                                                    <p>同意。</p>
+                                                    <p>2016-02-04 16:48:25</p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li id="liApprovalProcess" class="oa-approval-content" style="display: none;">
+                                    <div>
+                                        <ul class="ui-list ui-list-pure ui-border-tb">
+                                            <li class="ui-border-t">
+                                                <div class="oa-approval-process">
+                                                    <p>[拟稿] 左金凤</p>
+                                                    <p>股份公司信息中心管理研发部</p>
+                                                    <p>[完成] 2016-02-04 16:44:36</p>
+                                                </div>
+                                            </li>
+                                            <li class="ui-border-t">
+                                                <div class="oa-approval-process">
+                                                    <p>[秘书处理] 危娜</p>
+                                                    <p>股份公司信息中心办公室</p>
+                                                    <p>[其他意见] <span>同意办公室意见。</span></p>
+                                                    <p>[完成] 2016-02-04 16:48:25</p>
+                                                </div>
+                                            </li>
+                                            <li class="ui-border-t">
+                                                <div class="oa-approval-process">
+                                                    <p>[办公室秘书处理] 何立</p>
+                                                    <p>股份公司办公室(文印管理)</p>
+                                                    <p>[公司领导批示] <span>同意。</span></p>
+                                                    <p>[完成] 2016-02-04 16:49:14</p>
+                                                </div>
+                                            </li>
+                                            <li class="ui-border-t">
+                                                <div class="oa-approval-process">
+                                                    <p>[呈送部门处理] 危娜</p>
+                                                    <p>股份公司信息中心</p>
+                                                    <p>[完成] 2016-02-04 16:55:31</p>
+                                                </div>
+                                            </li>
+                                            <li class="ui-border-t">
+                                                <div class="oa-approval-process">
+                                                    <p>[秘书处理] 危娜</p>
+                                                    <p>股份公司信息中心办公室</p>
+                                                    <p>[完成] 2016-03-02 09:54:06</p>
+                                                </div>
+                                            </li>
+                                            <li class="ui-border-t">
+                                                <div class="oa-approval-process">
+                                                    <p>[编号并电子分发] 危娜</p>
+                                                    <p>股份公司信息中心办公室</p>
+                                                    <p>[阅读] 2016-03-02 09:54:13</p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li id="liApprovalYourOpinion" class="oa-approval-content" style="display: none;">
+                                    <div class="oa-your-opinion">
+                                        <div>
+                                            意见类型：
+                                        </div>
+                                        <div id="divOpinionType">
+                                            <label class="ui-label" value="10" id="leaderOpinion">公司领导批示</label>
+                                            <label class="ui-label" value="4">主办单位意见</label>
+                                            <label class="ui-label" value="0">主办单位处、室意见</label>
+                                            <label class="ui-label" value="2">会签意见</label>
+                                            <label class="ui-label current" value="8" id="otherOpinion">其他意见</label>
+                                        </div>
+                                        <div>
+                                            <textarea id="txtOpinion"></textarea>
+                                        </div>
+                                        <div>
+                                            <button type="button" class="ui-btn" id="btnCommonOpinion">常用意见</button>
+                                        </div>
+                                    </div>
+                                    <div class="ui-form ui-border-t oa-common-opinion" id="divOaCommonOpinion">
+                                        <div class="oa-common-opinion-header">
+                                            常用意见
+                                            <i class="ui-icon-close-page" id="iOaCommonOpinionClose"></i>
+                                        </div>
+                                        <div class="oa-common-opinion-content" id="divOaCommonOpinionContent">
+                                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                                <a href="#">同意。</a>
+                                            </div>
+                                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                                <a href="#">已阅。</a>
+                                            </div>
+                                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                                <a href="#">发。</a>
+                                            </div>
+                                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                                <a href="#">同意外办意见。</a>
+                                            </div>
+                                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                                <a href="#">同意办公室意见。</a>
+                                            </div>
+                                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                                <a href="#">送人力资源部阅研。</a>
+                                            </div>
+                                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                                <a href="#">送人力资源部阅处。</a>
+                                            </div>
+                                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                                <a href="#">办公会议议定。</a>
+                                            </div>
+                                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                                <a href="#">同意、报集团批。</a>
+                                            </div>
+                                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                                <a href="#">请公司领导传阅。</a>
+                                            </div>
+                                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                                <a href="#">请送各位常委阅。</a>
+                                            </div>
+                                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                                <a href="#">转发各单位。</a>
+                                            </div>
+                                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                                <a href="#">抓紧办理，结果报我。</a>
+                                            </div>
+                                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                                <a href="#">请 部会同 部拿出意见。</a>
+                                            </div>
+                                            <div class="ui-form-item ui-form-item-order ui-border-b">
+                                                <a href="#">原则同意，请 部 部阅，提出意见。</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                </li>
+            </ul>
+
+            <ul id="ulSendAndPass">
+                <li>
+                    <section class="ui-tab oa-operation" id="sOaOperation">
+                        <div>
+                            <ul class="ui-tab-nav ui-border-b" id="ulSendOrPass">
+                                <li class="current" id="liOperationSendTab">发送</li>
+                                <li id="liOperationPassTab">传阅</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <ul class="ui-tab-content">
+                                <li id="liOperationSend" class="oa-operation-content">
+                                    <div class="oa-operation-send">
+                                        <div>
+                                            请选择下一步骤：
+                                        </div>
+                                        <div id="divNextStep">
+                                            <label id="lNextStep0" class="ui-label current" value="MS|MS|0">秘书处理</label><label id="lNextStep1" class="ui-label" value="SH|SH|0">审核</label><label id="lNextStep2" class="ui-label" value="SP|SP|0">审批</label>
+                                        </div>
+                                        <div id="divSelectTitle">
+                                            请选择处理部门或人员：
+                                        </div>
+                                        <div id="divNextStepOperator">
+                                            <div>
+                                                <input type="radio" value="204270" id="radioDept0" name="dept" checked=""><label for="radioDept0">危娜</label>
+                                            </div>
+                                        </div>
+                                        <div class="oa-operation-onekeywork" id="divAddOneKey">
+                                            <input type="checkbox" id="chkOneKey">
+                                            <label for="chkOneKey">将本次操作保存为一键办公</label>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li id="liOperationPass" class="oa-operation-content" style="display: none;">
+                                    <div class="oa-operation-pass">
+                                        <div>
+                                            请选择地址簿：
+                                        </div>
+                                        <div>
+                                            <label class="ui-label current" id="lDeptEmployee">本部门员工</label>
+                                            <label class="ui-label" id="lAddressBook">个人地址簿</label>
+                                        </div>
+                                        <div id="divPassControl">
+                                            请选择传阅的人员：
+                                            <button class="ui-btn" type="button" id="btnSelectAllPass">全选</button>
+                                            <button class="ui-btn" type="button" id="btnCancelAllPass">取消</button>
+                                        </div>
+                                        <div id="divPassUser">
+                                            <table>
+                                                <tr><td><input type="checkbox" value="753125" id="chkDeptCy0" name="deptCy"><label for="chkDeptCy0">刘勇</label></td><td><input type="checkbox" value="707505" id="chkDeptCy1" name="deptCy"><label for="chkDeptCy1">彭聚智</label></td></tr>
+                                                <tr><td><input type="checkbox" value="723564" id="chkDeptCy2" name="deptCy"><label for="chkDeptCy2">陈贤勇</label></td><td><input type="checkbox" value="206336" id="chkDeptCy3" name="deptCy"><label for="chkDeptCy3">刘佳</label></td></tr>
+                                                <tr><td><input type="checkbox" value="732256" id="chkDeptCy4" name="deptCy"><label for="chkDeptCy4">方佩伟</label></td><td><input type="checkbox" value="181226" id="chkDeptCy5" name="deptCy"><label for="chkDeptCy5">张秀丽</label></td></tr>
+                                                <tr><td><input type="checkbox" value="181264" id="chkDeptCy6" name="deptCy"><label for="chkDeptCy6">高为铨</label></td><td><input type="checkbox" value="196112" id="chkDeptCy7" name="deptCy"><label for="chkDeptCy7">赵伟恩</label></td></tr>
+                                                <tr><td><input type="checkbox" value="197959" id="chkDeptCy8" name="deptCy"><label for="chkDeptCy8">孙林升</label></td><td><input type="checkbox" value="201305" id="chkDeptCy9" name="deptCy"><label for="chkDeptCy9">雷洁</label></td></tr>
+                                                <tr><td><input type="checkbox" value="201404" id="chkDeptCy10" name="deptCy"><label for="chkDeptCy10">冯蕾</label></td><td><input type="checkbox" value="204321" id="chkDeptCy11" name="deptCy"><label for="chkDeptCy11">曾敏</label></td></tr>
+                                                <tr><td><input type="checkbox" value="204346" id="chkDeptCy12" name="deptCy"><label for="chkDeptCy12">卢一敏</label></td><td><input type="checkbox" value="205639" id="chkDeptCy13" name="deptCy"><label for="chkDeptCy13">王轩</label></td></tr>
+                                                <tr><td><input type="checkbox" value="207415" id="chkDeptCy14" name="deptCy"><label for="chkDeptCy14">林蔼荃</label></td><td><input type="checkbox" value="207700" id="chkDeptCy15" name="deptCy"><label for="chkDeptCy15">陈鑫</label></td></tr>
+                                                <tr><td><input type="checkbox" value="207739" id="chkDeptCy16" name="deptCy"><label for="chkDeptCy16">黄文杰</label></td><td><input type="checkbox" value="207957" id="chkDeptCy17" name="deptCy"><label for="chkDeptCy17">白灿</label></td></tr>
+                                                <tr><td><input type="checkbox" value="207983" id="chkDeptCy18" name="deptCy"><label for="chkDeptCy18">黄子健</label></td><td><input type="checkbox" value="207988" id="chkDeptCy19" name="deptCy"><label for="chkDeptCy19">关道平</label></td></tr>
+                                                <tr><td><input type="checkbox" value="207990" id="chkDeptCy20" name="deptCy"><label for="chkDeptCy20">江玲</label></td><td><input type="checkbox" value="207992" id="chkDeptCy21" name="deptCy"><label for="chkDeptCy21">陈世文</label></td></tr>
+                                                <tr><td><input type="checkbox" value="207993" id="chkDeptCy22" name="deptCy"><label for="chkDeptCy22">刘永生</label></td><td><input type="checkbox" value="207994" id="chkDeptCy23" name="deptCy"><label for="chkDeptCy23">任绪凯</label></td></tr>
+                                                <tr><td><input type="checkbox" value="207996" id="chkDeptCy24" name="deptCy"><label for="chkDeptCy24">刘慧璐</label></td><td><input type="checkbox" value="208260" id="chkDeptCy25" name="deptCy"><label for="chkDeptCy25">胡轶灏</label></td></tr>
+                                                <tr><td><input type="checkbox" value="209387" id="chkDeptCy26" name="deptCy"><label for="chkDeptCy26">翁少娜</label></td><td><input type="checkbox" value="209395" id="chkDeptCy27" name="deptCy"><label for="chkDeptCy27">余伟兴</label></td></tr>
+                                                <tr><td><input type="checkbox" value="209405" id="chkDeptCy28" name="deptCy"><label for="chkDeptCy28">章拓</label></td><td><input type="checkbox" value="209450" id="chkDeptCy29" name="deptCy"><label for="chkDeptCy29">张允悦</label></td></tr>
+                                                <tr><td><input type="checkbox" value="209461" id="chkDeptCy30" name="deptCy"><label for="chkDeptCy30">钟盛翔</label></td><td><input type="checkbox" value="719364" id="chkDeptCy31" name="deptCy"><label for="chkDeptCy31">罗应谦</label></td></tr>
+                                                <tr><td><input type="checkbox" value="724327" id="chkDeptCy32" name="deptCy"><label for="chkDeptCy32">陈海辉</label></td><td><input type="checkbox" value="742470" id="chkDeptCy33" name="deptCy"><label for="chkDeptCy33">蔡运碧</label></td></tr>
+                                                <tr><td><input type="checkbox" value="742991" id="chkDeptCy34" name="deptCy"><label for="chkDeptCy34">肖拯阳</label></td><td><input type="checkbox" value="743360" id="chkDeptCy35" name="deptCy"><label for="chkDeptCy35">赵民振</label></td></tr>
+                                                <tr><td><input type="checkbox" value="748598" id="chkDeptCy36" name="deptCy"><label for="chkDeptCy36">石佳劼</label></td><td><input type="checkbox" value="748599" id="chkDeptCy37" name="deptCy"><label for="chkDeptCy37">孔汉连</label></td></tr>
+                                                <tr><td><input type="checkbox" value="748780" id="chkDeptCy38" name="deptCy"><label for="chkDeptCy38">莫凯杰</label></td><td><input type="checkbox" value="750071" id="chkDeptCy39" name="deptCy"><label for="chkDeptCy39">曹昱</label></td></tr>
+                                                <tr><td><input type="checkbox" value="752200" id="chkDeptCy40" name="deptCy"><label for="chkDeptCy40">黄金鹏</label></td><td><input type="checkbox" value="752306" id="chkDeptCy41" name="deptCy"><label for="chkDeptCy41">马艳玲</label></td></tr>
+                                                <tr><td><input type="checkbox" value="752312" id="chkDeptCy42" name="deptCy"><label for="chkDeptCy42">郭骏伟</label></td><td><input type="checkbox" value="752322" id="chkDeptCy43" name="deptCy"><label for="chkDeptCy43">罗礼</label></td></tr>
+                                                <tr><td><input type="checkbox" value="752329" id="chkDeptCy44" name="deptCy"><label for="chkDeptCy44">王益妮</label></td><td><input type="checkbox" value="752335" id="chkDeptCy45" name="deptCy"><label for="chkDeptCy45">王丹</label></td></tr>
+                                                <tr><td><input type="checkbox" value="753783" id="chkDeptCy46" name="deptCy"><label for="chkDeptCy46">詹锦桦</label></td><td><input type="checkbox" value="756586" id="chkDeptCy47" name="deptCy"><label for="chkDeptCy47">罗铭</label></td></tr>
+                                                <tr><td><input type="checkbox" value="758987" id="chkDeptCy48" name="deptCy"><label for="chkDeptCy48">杨河德</label></td><td><input type="checkbox" value="760428" id="chkDeptCy49" name="deptCy"><label for="chkDeptCy49">邵逸杰</label></td></tr>
+                                                <tr><td><input type="checkbox" value="763068" id="chkDeptCy50" name="deptCy"><label for="chkDeptCy50">谢伟</label></td><td><input type="checkbox" value="763966" id="chkDeptCy51" name="deptCy"><label for="chkDeptCy51">张扬</label></td></tr>
+                                                <tr><td><input type="checkbox" value="768671" id="chkDeptCy52" name="deptCy"><label for="chkDeptCy52">王伏初</label></td><td><input type="checkbox" value="768711" id="chkDeptCy53" name="deptCy"><label for="chkDeptCy53">黄永辉</label></td></tr>
+                                                <tr><td><input type="checkbox" value="769999" id="chkDeptCy54" name="deptCy"><label for="chkDeptCy54">沈永全</label></td><td><input type="checkbox" value="773204" id="chkDeptCy55" name="deptCy"><label for="chkDeptCy55">林汉茂</label></td></tr>
+                                                <tr><td><input type="checkbox" value="796798" id="chkDeptCy56" name="deptCy"><label for="chkDeptCy56">羊羊</label></td><td><input type="checkbox" value="722037" id="chkDeptCy57" name="deptCy"><label for="chkDeptCy57">王海东</label></td></tr>
+                                                <tr><td><input type="checkbox" value="722038" id="chkDeptCy58" name="deptCy"><label for="chkDeptCy58">李文</label></td><td><input type="checkbox" value="743332" id="chkDeptCy59" name="deptCy"><label for="chkDeptCy59">左金凤</label></td></tr>
+                                                <tr><td><input type="checkbox" value="743336" id="chkDeptCy60" name="deptCy"><label for="chkDeptCy60">王磊</label></td><td><input type="checkbox" value="196747" id="chkDeptCy61" name="deptCy"><label for="chkDeptCy61">王峰</label></td></tr>
+                                                <tr><td><input type="checkbox" value="198017" id="chkDeptCy62" name="deptCy"><label for="chkDeptCy62">黄伟键</label></td><td><input type="checkbox" value="198053" id="chkDeptCy63" name="deptCy"><label for="chkDeptCy63">黄锦富</label></td></tr>
+                                                <tr><td><input type="checkbox" value="752346" id="chkDeptCy64" name="deptCy"><label for="chkDeptCy64">李沁</label></td><td><input type="checkbox" value="752351" id="chkDeptCy65" name="deptCy"><label for="chkDeptCy65">罗斌</label></td></tr>
+                                                <tr><td><input type="checkbox" value="752356" id="chkDeptCy66" name="deptCy"><label for="chkDeptCy66">黄佳新</label></td></tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                </li>
+            </ul>
+        </section>
+
+        <footer class="ui-footer ui-footer-btn">
+            <ul class="ui-tiled ui-border-t oa-tabs-footer" id="ulOaTabsFooter">
+                <li class="ui-border-r current" id="liMainPageFormTab">
+                    表单
+                </li>
+                <li class="ui-border-r" id="liMainPageDocumentTab">
+                    正文
+                </li>
+                <li class="ui-border-r" id="liMainPageAttachmentTab">
+                    附件
+                </li>
+                <li class="ui-border-r" id="liMainPageApprovalTab">
+                    批办意见
+                </li>
+                <li class="ui-border-r" id="liMainPageSendTab">
+                    发送
+                </li>
+            </ul>
+        </footer>
+
+    </div>
+
+    <div class="oa-tabs" id="divFastTab" style="display: none;">
+
+        <header class="ui-header ui-header-positive ui-border-b">
+            <i class="ui-icon-return" id="iFastReturn"></i>
+            <div class="oa-tabs-left" id="divFastReturn">审批单</div>
+            <h1></h1>
+            <button class="ui-btn" type="button" id="btnFastSend">发送</button>
+            <button class="ui-btn" type="button" id="btnDeleteFastSend">删除</button>
+        </header>
+
+        <section class="oa-work-list" id="sOaWorkList">
+            <div>请选择一键发送的对象：</div>
+            <div id="divFastSendList">
+                <table class="current">
+                    <tbody>
+                        <tr><td><span>[秘书处理]何炅</span>股份公司信息中心办公室<input type="hidden" value="1419"></td></tr>
+                        <tr><td>意见：同意。</td></tr>
+                    </tbody>
+                </table>
+                <table>
+                    <tbody>
+                        <tr><td><span>[秘书处理]谢娜</span>股份公司信息中心办公室<input type="hidden" value="1419"></td></tr>
+                        <tr><td>意见：同意。</td></tr>
+                    </tbody>
+                </table>
+                <table>
+                    <tbody>
+                        <tr><td><span>[秘书处理]吴昕</span>股份公司信息中心办公室<input type="hidden" value="1419"></td></tr>
+                        <tr><td>意见：同意。</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+
+</body>
+</html>

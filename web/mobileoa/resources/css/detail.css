@@ -1,0 +1,89 @@
+﻿/* 布局样式 */
+.oa-tabs { overflow: hidden; padding-top: 2.5em; }
+.oa-tabs-content ul { float: left; }
+.oa-tabs-footer { border-top: 0.1em solid #9ac7ed; background: #ECF2F6; }
+.oa-tabs-footer li { color: #2a70be; width: auto; display: inline; display: -webkit-box; }
+.oa-tabs-footer li.current { border-top: 0.1em solid #2a70be; margin-top: -0.1em; background: #FFF; color: #c14545; }
+
+/* 表单样式 */
+.oa-form { position: relative; }
+.oa-form-titile { font-size: 1.8em; line-height: 1.2em; text-align: center; }
+.oa-form-value { width: 100%; -webkit-box-sizing: border-box; box-sizing: border-box; -webkit-appearance: none; border: 0; background: 0 0; padding-left: 5.5em; }
+
+/* 正文样式 */
+.oa-content { }
+.oa-content-doc { background-color: #fdfad3; height: 100%; position: relative; padding: 0 0.5em; }
+.oa-content-pdf { background-color: #eee; height: 100%; width: 100%; }
+.oa-content-pdf .pdf-image { position: relative; height: 100%; z-index: 2; }
+.oa-content-pdf .pdf-image div { position: relative; background: #fff; z-index: 3; }
+.oa-content-pdf .pdf-image img { width: 100%; z-index: 3; }
+.oa-content-pdf .page-nav-footer { position: absolute; z-index: 3; font-size: 18px; line-height: 40px; height: 40px; text-align: center; filter: alpha(opacity=50); -moz-opacity: 0.5; -khtml-opacity: 0.5; opacity: 0.5; }
+.oa-content-pdf .pull-down, .oa-content-pdf .pull-up { position: absolute; z-index: 1; font-size: 18px; line-height: 30px; top: 0; text-align: center; }
+
+/* 附件样式 */
+.oa-attachment { overflow: auto; -webkit-overflow-scrolling: touch; }
+
+/* 流转意见样式 */
+.oa-approval { }
+.oa-approval-content { overflow: auto; -webkit-overflow-scrolling: touch; height: 100%; border: solid 1px white; }
+
+/* 批办意见样式 */
+.oa-approval-opinion { }
+.oa-approval-opinion p { padding: 1px 0; }
+.oa-approval-opinion p:nth-child(1) { font-size: 1.0em; font-weight: bold; }
+.oa-approval-opinion p:nth-child(2) { font-size: 0.8em; color: #777; }
+.oa-approval-opinion p:nth-child(3) { font-size: 0.8em; color: blue; }
+.oa-approval-opinion p:nth-child(4) { font-size: 0.8em; color: #777; }
+
+/* 批办过程样式 */
+.oa-approval-process { }
+.oa-approval-process p { padding: 1px 0; }
+.oa-approval-process p:nth-child(1) { font-size: 1.0em; font-weight: bold; }
+.oa-approval-process p:nth-child(2) { font-size: 0.8em; color: #777; }
+.oa-approval-process p:nth-child(3) { font-size: 0.8em; color: #777; }
+.oa-approval-process p:nth-child(4) { font-size: 0.8em; color: #777; }
+.oa-approval-process p:nth-child(3) span { color: blue; padding-left: 0.2em; }
+
+/* 您的意见样式 */
+.oa-your-opinion { padding: 0.5em 0.8em; }
+.oa-your-opinion label { margin-right: 0.3em; margin-bottom: 0.3em; }
+.oa-your-opinion label.current { background-color: #6f9ddc; color: #fff; }
+.oa-your-opinion div { margin-bottom: 0.3em; }
+.oa-your-opinion textarea { width: 100%; height: 8em; }
+.oa-common-opinion { position: absolute; border: 1px #bbb solid; display: none; }
+.oa-common-opinion-header { border-bottom: 1px #bbb solid; text-align: center; line-height: 2.5em; height: 2.5em; width: 100%; background: #f5f5f5; }
+.oa-common-opinion-header i { float: right; }
+.oa-common-opinion-content { overflow: auto; -webkit-overflow-scrolling: touch; }
+
+/* 操作页面样式 */
+.oa-operation { }
+.oa-operation-content { overflow: auto; -webkit-overflow-scrolling: touch; height: 100%; border: solid 1px white; }
+.oa-operation-onekeywork { color: #7CAE23; }
+.oa-operation-send, .oa-operation-pass { padding: 0.5em 0.8em; }
+.oa-operation-send label, .oa-operation-pass label { margin-right: 0.3em; margin-bottom: 0.3em; }
+.oa-operation-send label.current, .oa-operation-pass label.current { background-color: #6f9ddc; color: #fff; }
+.oa-operation-send div, .oa-operation-pass div { margin-top: 0.5em; margin-bottom: 0.5em; }
+.oa-operation-pass table { width: 100%; }
+.oa-operation-pass table td { padding: 0.5em; font-size: 1.2em; }
+
+/* 一键办公样式 */
+.oa-work-list { padding: 0.5em; }
+.oa-work-list table { width: 100%; margin-top: 0.45em; margin-bottom: 0.45em; border: 1px solid black; }
+.oa-work-list table.current { border: 1px solid #2a70be; color: #2a70be; }
+.oa-work-list table td { padding: 0.3em; }
+.oa-work-list table tr:nth-child(1) span { font-size: 1.2em; font-weight: bold; padding-right: 0.5em; }
+.oa-work-list table tr:nth-child(1) td:nth-child(2) { white-space: nowrap; text-align: right; }
+
+/* 加载中的样式 */
+.oa-loading { }
+.oa-loading span { float: left; }
+.oa-loading i { margin-top: 0.3em; margin-left: 0.3em; float: left; background: url('../image/loading_sprite.png'); -webkit-background-size: auto 20px; }
+
+/* 重写 frozen 的样式 */
+.ui-footer { height: 2.5em; }
+.ui-tab-content { width: 100%; height: 100%; }
+.ui-form-item { height: auto; font-size: 1em; line-height: 1.5em; padding-top: 0.5em; padding-bottom: 0.5em; }
+.ui-form-item label:not(.ui-switch):not(.ui-checkbox):not(.ui-radio) { width: 5em; }
+.ui-header .ui-btn { position: relative; float: right; margin-left: 0.45em; right: 0; margin-top: -1em; }
+.ui-tab-nav { font-size: 1em; height: 2.5em; }
+.ui-tab-nav li { height: 2.5em; line-height: 2.5em; }

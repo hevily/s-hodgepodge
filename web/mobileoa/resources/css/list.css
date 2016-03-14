@@ -1,0 +1,36 @@
+﻿/* 布局样式 */
+body { overflow-x: hidden; }
+.oa-list { padding-top: 2.5em; }
+.oa-bat-checkbox { padding: 0.3em 0.5em; font-size: 1em; }
+.oa-bat-checkbox label { margin-right: 1em; }
+.oa-bat-button { padding-bottom: 0.5em; text-align: center; font-size: 1.2em; }
+
+/* 重写 frozen 的样式 */
+.ui-header .ui-btn { float: right; margin-left: 0.45em; right: 0; margin-top: -1em; margin-right: 10px; }
+.ui-border-tb { border-top: none; }
+
+.ui-table { font-size: 0.8em; line-height: 1.5em; background-color: #fff; }
+.ui-table td, .ui-table th { position: static; border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; text-align: center; }
+.ui-table th { border-top: none; border-left: none; border-right: none; }
+.ui-table tr th:first-child { border-left: 1px solid #6f9ddc; }
+.ui-table tr th:last-child { border-right: 1px solid #6f9ddc; }
+.ui-table tr td:first-child { border-left: 1px solid #e0e0e0; }
+.ui-table tr td:last-child { border-right: 1px solid #e0e0e0; }
+.ui-table tr:last-child td:first-child { border-left: 1px solid #6f9ddc; }
+.ui-table tr:last-child td:last-child { border-right: 1px solid #6f9ddc; }
+.ui-table td:after, .ui-table th:after { background-image: none; }
+.ui-table td { padding: 0.3em 0.5em; text-align: left; }
+.ui-table td:first-child { width: 3em; }
+.ui-table td:last-child { width: 4em; }
+.ui-table td:last-child, td:first-child { text-align: center; }
+.ui-table th { height: 2.2em; line-height: 2.2em; font-size: 1.1em; font-weight: bolder; text-align: center; background: #6f9ddc; color: #fff; }
+.ui-table th:after { background-image: none; }
+.ui-table th:last-child:after { background-image: none; }
+.ui-table tr:first-child a { color: #fff; }
+.ui-table tr:nth-child(odd) { background: rgb(249, 249, 249); }
+
+.ui-table .ui-table-pager { background-color: #6f9ddc !important; }
+.ui-table .ui-table-pager { border-top: 1px solid #e0e0e0; }
+.ui-table .ui-table-pager { height: 1.9em; line-height: 1.9em; font-size: 1.1em; font-weight: bolder; background: #6f9ddc; color: #fff; }
+.ui-table .ui-table-pager a { color: #fff; }
+.ui-table .ui-table-pager div { float: left; width: 20%; }
