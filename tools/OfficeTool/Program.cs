@@ -16,6 +16,7 @@ namespace OfficeTool
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new OfficeTool());
+            //Application.Run(new GenNotWorkDay());
             //Application.Run(new VerificationCodeTool());
         }
     }

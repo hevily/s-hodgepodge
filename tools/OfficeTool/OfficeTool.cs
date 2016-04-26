@@ -16,14 +16,32 @@ namespace OfficeTool
 {
     public partial class OfficeTool : Form
     {
-        private string _logFilePath = Path.Combine(Application.StartupPath, ConfigurationManager.AppSettings["LogFileName"]);
-        private string _iniFilePath = Path.Combine(Application.StartupPath, ConfigurationManager.AppSettings["IniFileName"]);
-        private string _iniFileSection = ConfigurationManager.AppSettings["IniFileSection"];
+        #region 全局变量
+
+        private string _logFilePath = string.Empty;
+        private string _iniFilePath = string.Empty;
+        private string _iniFileSection = string.Empty;
+        private string _checkinUrl = string.Empty;
+
+        private int _timeInterval = 30000;
+        private int _delayResult = 1000;
+        private int _checkInOutTimes = 3;
+
         private DateTime _oldTime = DateTime.Now;
+        private int _isCheckInCount = 0;
+        private int _isCheckOutCount = 0;
         private bool _isCheckIn = false;
         private bool _isCheckOut = false;
-        private delegate bool CheckInDelegate();
-        private delegate bool CheckOutDelegate();
+        private bool _isCheckIning = false;
+        private bool _isCheckOuting = false;
+
+        private List<string> _listNotWorkDay = null;
+        private string _checkInRepeat = string.Empty;
+        private string _checkInSuccess = string.Empty;
+        private string _checkOutEarly = string.Empty;
+        private string _checkOutSuccess = string.Empty;
+
+        #endregion
 
         public OfficeTool()
         {
@@ -48,16 +66,13 @@ namespace OfficeTool
                 // notifyIcon1.Visible = false;                //托盘图标隐藏
             }
         }
-
         private void btnCheckIn_Click(object sender, EventArgs e)
         {
             CheckIn();
-            ReadLog();
         }
         private void btnCheckOut_Click(object sender, EventArgs e)
         {
             CheckOut();
-            ReadLog();
         }
         private void btnSave_Click(object sender, EventArgs e)
         {
@@ -75,7 +90,6 @@ namespace OfficeTool
             {
                 MessageBox.Show(errMsg);
             }
-            ReadLog();
         }
         private void btnClearLog_Click(object sender, EventArgs e)
         {
@@ -88,21 +102,40 @@ namespace OfficeTool
             {
             }
         }
+        private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            if (webBrowser1.Url.AbsoluteUri == _checkinUrl)
+            {
+                AutoCheckInCheckOut();
+            }
+        }
 
         private void Init()
         {
-            webBrowser1.Navigate(new Uri(ConfigurationManager.AppSettings["CheckinUrl"]));
+            // 读取配置文件
+            _logFilePath = Path.Combine(Application.StartupPath, ConfigurationManager.AppSettings["LogFileName"]);
+            _iniFilePath = Path.Combine(Application.StartupPath, ConfigurationManager.AppSettings["IniFileName"]);
+            _iniFileSection = ConfigurationManager.AppSettings["IniFileSection"];
+            _checkinUrl = ConfigurationManager.AppSettings["CheckinUrl"];
 
-            Thread.Sleep(500);
+            _listNotWorkDay = GetWorkDayList(Path.Combine(Application.StartupPath, ConfigurationManager.AppSettings["NotWorkDay"]));
+            _checkInRepeat = ConfigurationManager.AppSettings["CheckInRepeat"];
+            _checkInSuccess = ConfigurationManager.AppSettings["CheckInSuccess"];
+            _checkOutEarly = ConfigurationManager.AppSettings["CheckOutEarly"];
+            _checkOutSuccess = ConfigurationManager.AppSettings["CheckOutSuccess"];
 
-            //this.textBox1.Text = GetIniValue("userid");
-            //this.textBox2.Text = GetIniValue("password");
+            int.TryParse(ConfigurationManager.AppSettings["TimeInterval"], out _timeInterval);
+            int.TryParse(ConfigurationManager.AppSettings["DelayResult"], out _delayResult);
+            int.TryParse(ConfigurationManager.AppSettings["CheckInOutTimes"], out _checkInOutTimes);
+
+            // 跳转到目标网址
+            webBrowser1.Navigate(new Uri(_checkinUrl));
+
             this.textBox3.Text = GetIniValue("checkintime");
             this.textBox4.Text = GetIniValue("checkouttime");
             this.textBox5.Text = GetIniValue("offsettime");
-            ReadLog();
 
-            Thread.Sleep(500);
+            ReadLog();
 
             string errMsg = ValidateInput();
             if (!string.IsNullOrEmpty(errMsg))
@@ -110,11 +143,6 @@ namespace OfficeTool
                 MessageBox.Show(errMsg);
                 return;
             }
-
-            Thread.Sleep(500);
-
-            AutoCheckInCheckOut();
-
         }
         private string ValidateInput()
         {
@@ -149,27 +177,27 @@ namespace OfficeTool
             return errMsg;
         }
 
-        private bool CheckIn()
+        private void CheckIn()
         {
             try
             {
                 if (webBrowser1.InvokeRequired)
                 {
-                    CheckInDelegate checkInDelegate = CheckIn2;
-                    return (bool)this.webBrowser1.Invoke(checkInDelegate);
+                    this.webBrowser1.Invoke(new MethodInvoker(delegate { CheckIn2(); }));
                 }
                 else
                 {
-                    return CheckIn2();
+                    CheckIn2();
                 }
+
+                GetResult();
             }
             catch (Exception ex)
             {
                 WriteLog(ex.ToString());
-                return false;
             }
         }
-        private bool CheckIn2()
+        private void CheckIn2()
         {
             var txtId = ConfigurationManager.AppSettings["TxtId"];
             var btnId = ConfigurationManager.AppSettings["BtnCheckInId"];
@@ -182,35 +210,30 @@ namespace OfficeTool
                 txt.SetAttribute("value", code);
                 txt.InvokeMember("focus");
                 btn.InvokeMember("click");
-                doc.parentWindow.execScript("function alert(str){return true;} ", "javaScript");
-                WriteLog("签到成功");
-                return true;
+                _isCheckIning = true;
             }
-            WriteLog("签到失败");
-            return false;
-
         }
-        private bool CheckOut()
+        private void CheckOut()
         {
             try
             {
                 if (webBrowser1.InvokeRequired)
                 {
-                    CheckOutDelegate checkOutDelegate = CheckOut2;
-                    return (bool)this.webBrowser1.Invoke(checkOutDelegate);
+                    this.webBrowser1.Invoke(new MethodInvoker(delegate { CheckOut2(); }));
                 }
                 else
                 {
-                    return CheckOut2();
+                    CheckOut2();
                 }
+
+                GetResult();
             }
             catch (Exception ex)
             {
                 WriteLog(ex.ToString());
-                return false;
             }
         }
-        private bool CheckOut2()
+        private void CheckOut2()
         {
             var txtId = ConfigurationManager.AppSettings["TxtId"];
             var btnId = ConfigurationManager.AppSettings["BtnCheckOutId"];
@@ -223,19 +246,88 @@ namespace OfficeTool
                 txt.SetAttribute("value", code);
                 txt.InvokeMember("focus");
                 btn.InvokeMember("click");
-                doc.parentWindow.execScript("function alert(str){return true;} ", "javaScript");
-                WriteLog("签退成功");
-                return true;
+                _isCheckOuting = true;
             }
-            WriteLog("签退失败");
-            return false;
+        }
+        private void GetResult()
+        {
+            Thread thread = new Thread(GetResult2);
+            thread.Start();
+        }
+        private void GetResult2()
+        {
+            Thread.Sleep(_delayResult);
+
+            try
+            {
+                if (webBrowser1.InvokeRequired)
+                {
+                    this.webBrowser1.Invoke(new MethodInvoker(delegate { GetResult3(); }));
+                }
+                else
+                {
+                    GetResult3();
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteLog(ex.ToString());
+            }
+        }
+        private void GetResult3()
+        {
+            if (_isCheckIning)
+            {
+                var html = webBrowser1.Document.Window.Document.Body.InnerHtml;
+                if (html.Contains(_checkInSuccess))
+                {
+                    WriteLog("签到成功");
+                    _isCheckIn = true;
+                }
+                else if (html.Contains(_checkInRepeat))
+                {
+                    WriteLog("重复签到");
+                    _isCheckIn = true;
+                }
+                else
+                {
+                    WriteLog("签到失败");
+                    _isCheckIn = false;
+                    _isCheckInCount++;
+                }
+
+                _isCheckIning = false;
+            }
+
+            if (_isCheckOuting)
+            {
+                var html = webBrowser1.Document.Window.Document.Body.InnerHtml;
+                if (html.Contains(_checkOutEarly))
+                {
+                    WriteLog("您已早退");
+                    _isCheckOut = false;
+                }
+                else if (html.Contains(_checkOutSuccess))
+                {
+                    WriteLog("签退成功");
+                    _isCheckOut = true;
+                }
+                else
+                {
+                    WriteLog("签退失败");
+                    _isCheckIn = false;
+                    _isCheckOutCount++;
+                }
+
+                _isCheckOuting = false;
+            }
         }
 
         private void AutoCheckInCheckOut()
         {
             System.Timers.Timer timer = new System.Timers.Timer();
             timer.Enabled = true;
-            timer.Interval = int.Parse(ConfigurationManager.AppSettings["TimeInterval"]);
+            timer.Interval = _timeInterval;
             timer.Start();
             timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
         }
@@ -260,6 +352,15 @@ namespace OfficeTool
                 minuteCheckOut = 0;
             }
 
+            // 如果是非工作日，则跳过签到
+            if (_listNotWorkDay != null && _listNotWorkDay.Count > 0)
+            {
+                if (_listNotWorkDay.Contains(now.ToString("yyyyMMdd")))
+                {
+                    return;
+                }
+            }
+
             DateTime dtCheckIn = new DateTime(now.Year, now.Month, now.Day, hourCheckIn, minuteCheckIn, 30);
             DateTime dtCheckOut = new DateTime(now.Year, now.Month, now.Day, hourCheckOut, minuteCheckOut, 30);
 
@@ -268,23 +369,22 @@ namespace OfficeTool
             {
                 _isCheckIn = false;
                 _isCheckOut = false;
+                _isCheckInCount = 0;
+                _isCheckOutCount = 0;
             }
             _oldTime = now;
 
             // 自动签到
-            if (!_isCheckIn && now > dtCheckIn)
+            if (!_isCheckIn && now > dtCheckIn && _isCheckInCount < _checkInOutTimes)
             {
-                _isCheckIn = CheckIn();
+                CheckIn();
             }
 
             // 自动签退
-            if (!_isCheckOut && now > dtCheckOut)
+            if (!_isCheckOut && now > dtCheckOut && _isCheckOutCount < _checkInOutTimes)
             {
-                _isCheckOut = CheckOut();
+                CheckOut();
             }
-
-            ReadLog();
-
         }
 
         private void WriteLog(string log)
@@ -296,6 +396,7 @@ namespace OfficeTool
                 sw.WriteLine(log);
                 sw.WriteLine("");
             }
+            ReadLog();
         }
         private void ReadLog()
         {
@@ -348,6 +449,24 @@ namespace OfficeTool
 
             Clipboard.Clear();
             return result;
+        }
+        private List<string> GetWorkDayList(string path)
+        {
+            if (!File.Exists(path)) { using (File.Create(path)) { } }
+
+            var list = new List<string>();
+            using (var sr = File.OpenText(path))
+            {
+                var line = string.Empty;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    if (!string.IsNullOrEmpty(line.Trim()) && line.Contains("=") && !list.Contains(line.Split('=')[0]))
+                    {
+                        list.Add(line.Split('=')[0]);
+                    }
+                }
+            }
+            return list;
         }
 
 
@@ -406,6 +525,7 @@ namespace OfficeTool
         }
 
         #endregion
+
 
     }
 }

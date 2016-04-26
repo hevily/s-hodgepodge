@@ -60,6 +60,7 @@
             this.webBrowser1.Name = "webBrowser1";
             this.webBrowser1.Size = new System.Drawing.Size(439, 236);
             this.webBrowser1.TabIndex = 0;
+            this.webBrowser1.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser1_DocumentCompleted);
             // 
             // btnSave
             // 
@@ -155,8 +156,8 @@
             this.richTextBox1.ReadOnly = true;
             this.richTextBox1.Size = new System.Drawing.Size(272, 141);
             this.richTextBox1.TabIndex = 16;
-            this.richTextBox1.Text = "假如签到时间为 08:30\n假如签退时间为 16:45\n假如偏差时间为 10分钟\n实际签到时间 = 08:30 - (0~10的随机数)\n实际签退时间 = 16:" +
-    "45 + (0~10的随机数)\n避免每次签到都是准时准点，提高真实性\n\n祝大家签到愉快，每天上班都有个好心情 ";
+            this.richTextBox1.Text = "实际签到时间 = 签到时间 - 偏差时间\n实际签退时间 = 签退时间 + 偏差时间\n\n更新：新增非工作日排除功能\n如需休假，可手动维护 NotWorkDay.in" +
+    "i 文件\n\n更新：签到失败，会重复签到，直到成功为止";
             // 
             // btnCheckIn
             // 
@@ -181,7 +182,7 @@
             // notifyIcon1
             // 
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "OaTool";
+            this.notifyIcon1.Text = "OfficeTool";
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
             // 
@@ -214,7 +215,7 @@
             this.label2.TabIndex = 21;
             this.label2.Text = "日志：";
             // 
-            // Form1
+            // OfficeTool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -237,7 +238,7 @@
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.webBrowser1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Form1";
+            this.Name = "OfficeTool";
             this.Text = "OfficeTool";
             this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
             this.ResumeLayout(false);
