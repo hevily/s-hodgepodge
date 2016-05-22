@@ -17,6 +17,140 @@
 (function(window, document, Math, undefined) {
     'use strict';
 
+    var rAF = window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function(callback) {
+            window.setTimeout(callback, 1000 / 60);
+        };
+
+    var utils = (function() {
+        var me = {};
+
+        var _elementStyle = document.createElement('div').style;
+        var _vendor = (function() {
+            var vendors = ['t', 'webkitT', 'MozT', 'msT', 'OT'],
+                transform,
+                l = vendors.length;
+
+            for (var i = 0; i < l; i++) {
+                transform = vendors[i] + 'ransform';
+                if (transform in _elementStyle) {
+                    return vendors[i].substr(0, vendors[i].length - 1);
+                }
+            }
+
+            return false;
+        })();
+
+        me.prefixStyle = function(style) {
+            if (_vendor === false) return false;
+            if (_vendor === '') return style;
+            return _vendor + style.charAt(0).toUpperCase() + style.substr(1);
+        };
+        me.prefixHandler = function(handler) {
+            if (_vendor === false) return false;
+            if (_vendor === '') return handler;
+            return _vendor.replace('ms', '') + handler.charAt(0).toUpperCase() + handler.substr(1);
+        };
+
+        me.getTime = Date.now || function getTime() {
+            return new Date().getTime();
+        };
+
+        me.extend = function(target, obj) {
+            for (var i in obj) {
+                target[i] = obj[i];
+            }
+        };
+
+        me.addHandler = function(el, type, handler, args) {
+            if (el.addEventListener) {
+                el.addEventListener(type, handler, false);
+            } else if (el.attachEvent) {
+                el.attachEvent('on' + type, handler);
+            } else {
+                el['on' + type] = handler;
+            }
+        };
+        me.removeHandler = function(el, type, handler, args) {
+            if (el.removeEventListener) {
+                el.removeEventListener(type, handler, false);
+            } else if (el.detachEvent) {
+                el.detachEvent('on' + type, handler);
+            } else {
+                el['on' + type] = null;
+            }
+        };
+
+        me.prefixPointerEvent = function(pointerEvent) {
+            return window.MSPointerEvent ?
+                'MSPointer' + pointerEvent.charAt(7).toUpperCase() + pointerEvent.substr(8) :
+                pointerEvent;
+        };
+
+        me.extend(me, {
+            hasTransform: me.prefixStyle('transform') in _elementStyle,
+            hasTransition: me.prefixStyle('transition') in _elementStyle,
+            hasPerspective: me.prefixStyle('perspective') in _elementStyle,
+            hasTouch: 'ontouchstart' in window,
+            hasPointer: !!(window.PointerEvent || window.MSPointerEvent) // IE10 is prefixed
+        });
+
+        me.extend(me.style = {}, {
+            transform: me.prefixStyle('transform'),
+            transitionTimingFunction: me.prefixStyle('transitionTimingFunction'),
+            transitionDuration: me.prefixStyle('transitionDuration'),
+            transitionDelay: me.prefixStyle('transitionDelay'),
+            transformOrigin: me.prefixStyle('transformOrigin')
+        });
+
+        me.hasClass = function(e, c) {
+            var re = new RegExp("(^|\\s)" + c + "(\\s|$)");
+            return re.test(e.className);
+        };
+
+        me.addClass = function(e, c) {
+            if (me.hasClass(e, c)) {
+                return;
+            }
+            var newclass = e.className.split(' ');
+            newclass.push(c);
+            e.className = newclass.join(' ');
+        };
+
+        me.removeClass = function(e, c) {
+            if (!me.hasClass(e, c)) {
+                return;
+            }
+            var re = new RegExp("(^|\\s)" + c + "(\\s|$)", 'g');
+            e.className = e.className.replace(re, ' ');
+        };
+
+        me.ready = function(callback) {
+            if (/complete|loaded|interactive/.test(document.readyState) && document.body) {
+                callback();
+            } else {
+                if (document.addEventListener) {
+                    document.addEventListener('DOMContentLoaded', callback, false);
+                } else if (document.attachEvent) {
+                    document.attachEvent('onreadystatechange', callback);
+                } else {
+                    document.onreadystatechange = callback;
+                }
+            }
+        };
+
+        return me;
+    })();
+
+    // ie6 ~ ie8 not support trim()
+    String.prototype.trim = function() {
+        return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    };
+
     var Tab = function(opts) {
         if (typeof opts === undefined) {
             return;
@@ -61,6 +195,15 @@
             this._initClass();
             this._initEvent();
         },
+
+        destroy: function() {
+            // TODO
+            // this._initEvents(true);
+            // clearTimeout(this.resizeTimeout);
+            // this.resizeTimeout = null;
+            // this._execEvent('destroy');
+        },
+
         _initSize: function() {
             if (this.opts.useDefualtCSS) {
                 this.height = document.documentElement.clientHeight || document.body.clientHeight;
@@ -71,9 +214,9 @@
             for (var i = 0; i < this.length; i++) {
                 this.contents[i].style.width = this.width + 'px';
             }
-            this.content.style[utils.prefixStyle('transform')] = 'translate3d(' + (-this.index * this.width) + 'px,0,0)';
+            this.content.style[utils.prefixStyle('transform')] = 'translateX(' + (-this.index * this.width) + 'px)';
         },
-        _resetSize: function() {
+        _resize: function() {
             this._initSize();
         },
         _initClass: function() {
@@ -111,12 +254,12 @@
             });
             utils.addHandler(window, 'resize', function() {
                 window.setTimeout(function() {
-                    me._resetSize();
+                    me._resize();
                 }, 100);
             });
             utils.addHandler(window, 'orientationchange', function() {
                 window.setTimeout(function() {
-                    me._resetSize();
+                    me._resize();
                 }, 100);
             });
         },
@@ -162,7 +305,7 @@
                 if ((this.index === 0 && this.touch.disX > 0) || (this.index === this.length - 1 && this.touch.disX < 0)) {
                     this.touch.disX /= 4;
                 }
-                this.content.style[utils.prefixStyle('transform')] = 'translate3d(' + (this.touch.disX - this.index * this.width) + 'px,0,0)';
+                this.content.style[utils.prefixStyle('transform')] = 'translateX(' + (this.touch.disX - this.index * this.width) + 'px)';
             }
         },
         _touchEnd: function(e) {
@@ -189,7 +332,7 @@
                         this._replace();
                     }
                 }
-                this.content.style[utils.prefixStyle('transform')] = 'translate3d(' + (-this.index * this.width) + 'px,0,0)';
+                this.content.style[utils.prefixStyle('transform')] = 'translateX(' + (-this.index * this.width) + 'px)';
                 if (this.opts.callback[this.index]) {
                     this.opts.callback[this.index]();
                 }
@@ -221,7 +364,7 @@
 
                 this.index = target.index;
                 this.content.style[utils.prefixStyle('transition')] = 'all ' + this.opts.duration + 'ms';
-                this.content.style[utils.prefixStyle('transform')] = 'translate3d(' + (-this.index * this.width) + 'px,0,0)';
+                this.content.style[utils.prefixStyle('transform')] = 'translateX(' + (-this.index * this.width) + 'px)';
                 if (this.opts.callback[this.index]) {
                     this.opts.callback[this.index]();
                 }
@@ -234,73 +377,32 @@
             this.contents[this.index].className += ' ' + this.opts.currentClassName;
             this.contents[this.oldIndex].className = this.contents[this.oldIndex].className.replace(this.opts.currentClassName, '').trim();
             this.oldIndex = this.index;
+        },
+        _translate: function(x, y) {
+            if (utils.hasTransform) {
+                /* REPLACE START: _translate */
+                this.scrollerStyle[utils.style.transform] = 'translate(' + x + 'px,' + y + 'px)' + this.translateZ;
+                /* REPLACE END: _translate */
+            } else {
+                x = Math.round(x);
+                y = Math.round(y);
+                this.scrollerStyle.left = x + 'px';
+                this.scrollerStyle.top = y + 'px';
+            }
+
+            this.x = x;
+            this.y = y;
+
+            if (this.indicators) {
+                for (var i = this.indicators.length; i--;) {
+                    this.indicators[i].updatePosition();
+                }
+            }
+            // INSERT POINT: _translate
         }
     };
 
-    // 公共方法
-    var utils = (function(window, document) {
-        var _me = {};
-        var _elementDiv = document.createElement('div').style;
-        var _vendor = (function() {
-            var vendors = ['t', 'webkitT', 'MozT', 'msT', 'OT'],
-                transform,
-                l = vendors.length;
-            for (var i = 0; i < l; i++) {
-                transform = vendors[i] + 'ransform';
-                if (transform in _elementDiv) {
-                    return vendors[i].substr(0, vendors[i].length - 1);
-                }
-            }
-            return false;
-        })();
-        _me.prefixStyle = function(style) {
-            if (_vendor === false) return false;
-            if (_vendor === '') return style;
-            return _vendor + style.charAt(0).toUpperCase() + style.substr(1);
-        };
-        _me.prefixHandler = function(handler) {
-            if (_vendor === false) return false;
-            if (_vendor === '') return handler;
-            return _vendor.replace('ms', '') + handler.charAt(0).toUpperCase() + handler.substr(1);
-        };
-        _me.addHandler = function(el, type, handler, args) {
-            if (el.addEventListener) {
-                el.addEventListener(type, handler, false);
-            } else if (el.attachEvent) {
-                el.attachEvent('on' + type, handler);
-            } else {
-                el['on' + type] = handler;
-            }
-        };
-        _me.removeHandler = function(el, type, handler, args) {
-            if (el.removeEventListener) {
-                el.removeEventListener(type, handler, false);
-            } else if (el.detachEvent) {
-                el.detachEvent('on' + type, handler);
-            } else {
-                el['on' + type] = null;
-            }
-        };
-        _me.ready = function(callback) {
-            if (/complete|loaded|interactive/.test(document.readyState) && document.body) {
-                callback();
-            } else {
-                if (document.addEventListener) {
-                    document.addEventListener('DOMContentLoaded', callback, false);
-                } else if (document.attachEvent) {
-                    document.attachEvent('onreadystatechange', callback);
-                } else {
-                    document.onreadystatechange = callback;
-                }
-            }
-        };
-        return _me;
-    })(window, document);
 
-    // ie6 ~ ie8 not support trim()
-    String.prototype.trim = function() {
-        return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-    };
 
     window.Tab = Tab;
 
