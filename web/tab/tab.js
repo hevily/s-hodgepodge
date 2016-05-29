@@ -31,7 +31,7 @@
 
         var _elementStyle = document.createElement('div').style;
         var _vendor = (function() {
-            var vendors = ['t', 'webkitT', 'MozT', 'msT', 'OT'],
+            var vendors = ['t', 'webkitT', 'mozT', 'msT', 'oT'],
                 transform,
                 l = vendors.length;
 
@@ -161,6 +161,24 @@
             }
         };
 
+        me.preventDefault = function(e) {
+            // ie6 ~ ie8 not support e.preventDefault
+            if (e.preventDefault) {
+                e.preventDefault();
+            } else {
+                e.returnValue = false;
+            }
+        };
+
+        me.stopPropagation = function(e) {
+            // ie6 ~ ie8 not support e.stopPropagation
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            } else {
+                e.cancelBubble = false;
+            }
+        };
+
         return me;
     })();
 
@@ -170,7 +188,8 @@
     };
 
     var Tab = function(opts) {
-        if (typeof opts === undefined) {
+
+        if (opts === undefined) {
             return;
         }
 
@@ -233,7 +252,7 @@
             for (var i = 0; i < this.length; i++) {
                 this.contents[i].style.width = this.width + 'px';
             }
-            // this._translate();
+            this._translate();
         },
         _resize: function() {
             var me = this;
@@ -406,12 +425,7 @@
                 return;
             }
 
-            // ie6 ~ ie8 not support e.preventDefault
-            if (e.preventDefault) {
-                e.preventDefault();
-            } else {
-                e.returnValue = false;
-            }
+            utils.preventDefault(e);
 
             this.initiated = utils.eventType[e.type];
 
@@ -443,12 +457,7 @@
                 return;
             }
 
-            // ie6 ~ ie8 not support e.preventDefault
-            if (e.preventDefault) {
-                e.preventDefault();
-            } else {
-                e.returnValue = false;
-            }
+            utils.preventDefault(e);
 
             // ie6 ~ ie8 not support e.pageX
             var point = e.touches ? e.touches[0] : e;
@@ -490,19 +499,8 @@
 
             this.initiated = false;
 
-            // ie6 ~ ie8 not support e.preventDefault
-            if (e.preventDefault) {
-                e.preventDefault();
-            } else {
-                e.returnValue = false;
-            }
-
-            // ie6 ~ ie8 not support e.stopPropagation
-            if (e.stopPropagation) {
-                e.stopPropagation();
-            } else {
-                e.cancelBubble = false;
-            }
+            utils.preventDefault(e);
+            utils.stopPropagation(e);
 
             if (this.touch.fixed === 'left') {
                 var absX = Math.abs(this.touch.disX);
@@ -536,24 +534,13 @@
         },
         _touchClick: function(e) {
             var target = e.target || e.srcElement;
-            if (target.nodeType === 1 && typeof target.index !== undefined) {
+            if (target.nodeType === 1 && target.index !== undefined) {
                 if (target.index === this.index) {
                     return;
                 }
 
-                // ie6 ~ ie8 not support e.preventDefault
-                if (e.preventDefault) {
-                    e.preventDefault();
-                } else {
-                    e.returnValue = false;
-                }
-
-                // ie6 ~ ie8 not support e.stopPropagation
-                if (e.stopPropagation) {
-                    e.stopPropagation();
-                } else {
-                    e.cancelBubble = false;
-                }
+                utils.preventDefault(e);
+                utils.stopPropagation(e);
 
                 this.index = target.index;
                 this._translate();
