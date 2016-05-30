@@ -147,17 +147,7 @@ namespace OfficeTool
         private string ValidateInput()
         {
             int intTmep = 0;
-            string errMsg = string.Empty;
-
-            //if (this.textBox1.Text.Length != 6 || !int.TryParse(this.textBox1.Text, out intTmep))
-            //{
-            //    errMsg += "员工号必须为6位数字\r\n";
-            //}
-
-            //if (string.IsNullOrEmpty(this.textBox2.Text))
-            //{
-            //    errMsg += "密码不能为空\r\n";
-            //}
+            string errMsg = string.Empty;            
 
             if (this.textBox3.Text.Length != 4 || !int.TryParse(this.textBox3.Text, out intTmep))
             {
