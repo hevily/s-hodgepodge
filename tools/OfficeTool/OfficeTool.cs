@@ -41,6 +41,8 @@ namespace OfficeTool
         private string _checkOutEarly = string.Empty;
         private string _checkOutSuccess = string.Empty;
 
+        private string _checkInType = string.Empty;
+
         #endregion
 
         public OfficeTool()
@@ -79,11 +81,10 @@ namespace OfficeTool
             string errMsg = ValidateInput();
             if (string.IsNullOrEmpty(errMsg))
             {
-                //SetIniValue("userid", this.textBox1.Text);
-                //SetIniValue("password", this.textBox2.Text);
                 SetIniValue("checkintime", this.textBox3.Text);
                 SetIniValue("checkouttime", this.textBox4.Text);
                 SetIniValue("offsettime", this.textBox5.Text);
+                SetIniValue("checkintype", this.comboBox1.SelectedIndex.ToString());
                 WriteLog("保存成功");
             }
             else
@@ -128,12 +129,20 @@ namespace OfficeTool
             int.TryParse(ConfigurationManager.AppSettings["DelayResult"], out _delayResult);
             int.TryParse(ConfigurationManager.AppSettings["CheckInOutTimes"], out _checkInOutTimes);
 
+            _checkInType = ConfigurationManager.AppSettings["CheckInType"];
+            var types = _checkInType.Split('|');
+            foreach (var type in types)
+            {
+                this.comboBox1.Items.Add(type);
+            }
+
             // 跳转到目标网址
             webBrowser1.Navigate(new Uri(_checkinUrl));
 
             this.textBox3.Text = GetIniValue("checkintime");
             this.textBox4.Text = GetIniValue("checkouttime");
             this.textBox5.Text = GetIniValue("offsettime");
+            this.comboBox1.SelectedIndex = int.Parse(GetIniValue("checkintype"));
 
             ReadLog();
 
@@ -147,7 +156,7 @@ namespace OfficeTool
         private string ValidateInput()
         {
             int intTmep = 0;
-            string errMsg = string.Empty;            
+            string errMsg = string.Empty;
 
             if (this.textBox3.Text.Length != 4 || !int.TryParse(this.textBox3.Text, out intTmep))
             {
@@ -164,6 +173,11 @@ namespace OfficeTool
                 errMsg += "偏差时间必须为数字\r\n";
             }
 
+            if (this.comboBox1.SelectedIndex < 0)
+            {
+                errMsg += "必须选择值班类型\r\n";
+            }
+
             return errMsg;
         }
 
@@ -173,7 +187,7 @@ namespace OfficeTool
             {
                 if (webBrowser1.InvokeRequired)
                 {
-                    this.webBrowser1.Invoke(new MethodInvoker(delegate { CheckIn2(); }));
+                    this.webBrowser1.Invoke(new MethodInvoker(CheckIn2));
                 }
                 else
                 {
@@ -191,13 +205,15 @@ namespace OfficeTool
         {
             var txtId = ConfigurationManager.AppSettings["TxtId"];
             var btnId = ConfigurationManager.AppSettings["BtnCheckInId"];
+            var selectId = ConfigurationManager.AppSettings["SelectCheckInTypeId"];
             var txt = webBrowser1.Document.GetElementById(txtId);
             var btn = webBrowser1.Document.GetElementById(btnId);
+            var select = webBrowser1.Document.GetElementById(selectId);
             var doc = (IHTMLDocument2)webBrowser1.Document.DomDocument;
-            if (txt != null && btn != null && doc != null)
+            if (txt != null && btn != null && doc != null && select != null)
             {
-                var code = VerificationCode.Spot(GetVerificationImage(), 4);
-                txt.SetAttribute("value", code);
+                select.SetAttribute("selectedIndex", this.comboBox1.SelectedIndex.ToString());
+                txt.SetAttribute("value", VerificationCode.Spot(GetVerificationImage(), 4));
                 txt.InvokeMember("focus");
                 btn.InvokeMember("click");
                 _isCheckIning = true;
@@ -209,7 +225,7 @@ namespace OfficeTool
             {
                 if (webBrowser1.InvokeRequired)
                 {
-                    this.webBrowser1.Invoke(new MethodInvoker(delegate { CheckOut2(); }));
+                    this.webBrowser1.Invoke(new MethodInvoker(CheckOut2));
                 }
                 else
                 {
@@ -227,13 +243,15 @@ namespace OfficeTool
         {
             var txtId = ConfigurationManager.AppSettings["TxtId"];
             var btnId = ConfigurationManager.AppSettings["BtnCheckOutId"];
+            var selectId = ConfigurationManager.AppSettings["SelectCheckInTypeId"];
             var txt = webBrowser1.Document.GetElementById(txtId);
             var btn = webBrowser1.Document.GetElementById(btnId);
+            var select = webBrowser1.Document.GetElementById(selectId);
             var doc = (IHTMLDocument2)webBrowser1.Document.DomDocument;
-            if (txt != null && btn != null && doc != null)
+            if (txt != null && btn != null && doc != null && select != null)
             {
-                var code = VerificationCode.Spot(GetVerificationImage(), 4);
-                txt.SetAttribute("value", code);
+                select.SetAttribute("selectedIndex", this.comboBox1.SelectedIndex.ToString());
+                txt.SetAttribute("value", VerificationCode.Spot(GetVerificationImage(), 4));
                 txt.InvokeMember("focus");
                 btn.InvokeMember("click");
                 _isCheckOuting = true;
