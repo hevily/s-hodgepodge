@@ -84,3 +84,4 @@ var touches = e.touches ? e.touches[0] : e;
 var pageX = (touches.pageX) ? touches.pageX : e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
 var pageY = (touches.pageY) ? touches.pageY : e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
 ```
+欢迎大家来 [石佳劼的博客](http://shijiajie.com) 和我交流，在 [这里](http://shijiajie.com/2016/05/31/javascript-tabjs/#ds-thread)  留下您宝贵建议。
