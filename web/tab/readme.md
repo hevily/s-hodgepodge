@@ -1,8 +1,14 @@
-在 [MobileOA](/2016/03/13/frontend-mobileoa-demo/) 项目中，用了到第三方组件tab.js(带菜单的横屏滑动插件)，但兼容性很差，进行优化后，已兼容全平台（支持IE6+）。
 
-一直听说过IE6~IE9浏览器是深坑，这次终于有所体会，就本次优化tab.js而言，如果不对IE6~IE9进行兼容，工作量可以减少一倍。
+在 [样式布局分享-基于frozen.js的移动OA](http://shijiajie.com/2016/03/13/frontend-mobileoa-demo/) 文章中，用了到第三方组件 tab.js(带菜单的横屏滑动插件)，其兼容性很差，进行优化后，已兼容全平台（且支持IE6+）。
 
-我把此次遇到的浏览器兼容性问题进行简单的整理和总结，希望对大家有所帮助。
+![](http://7xkhp9.com1.z0.glb.clouddn.com/blog/javascript-tabjs/1.jpg)
+
+- [tab.js 百度网盘 下载地址](http://pan.baidu.com/s/1geCdHXh)
+- [tab.js GitHub Clone 地址](https://github.com/stone0090/code-hodgepodge/tree/master/web/tab) 
+
+一直听说过IE6~IE9浏览器的兼容性问题是深坑，这次终于有所体会，就本次优化tab.js而言，如果不对IE6~IE9进行兼容，工作量可以减少一倍。
+
+特此把遇到的各种浏览器兼容性问题进行汇总，希望对大家有所帮助。
 
 ### trim（不支持IE6~IE9）
 > 说明：去掉字符串中的空格。
@@ -14,7 +20,7 @@ String.prototype.trim = function () {
 ```
 
 ### requestAnimationFrame（不支持IE6~IE9）
-说明：它是由浏览器专门为动画提供的API，效果和setTimeout/setInterval类似。
+> 说明：它是由浏览器专门为动画提供的API，效果和setTimeout/setInterval类似。
 ``` javascript
 // 以下为兼容写法
 var rAF = window.requestAnimationFrame ||
@@ -26,7 +32,7 @@ var rAF = window.requestAnimationFrame ||
 ```
 
 ### addEventListener （不支持IE）
-说明：为元素绑定事件。
+> 说明：为元素绑定事件。
 ``` javascript
 // 以下写法可以兼容大部分情况
 var addHandler = function(el, type, handler, args) {
@@ -71,7 +77,7 @@ event.stopPropagation ? event.stopPropagation() : (event.cancelBubble = false);
 ```
 
 ### event.touches.pageX（不支持IE6~IE9）
-说明：鼠标在页面上的位置,从页面左上角开始,即是以页面为参考点,不随滑动条移动而变化。
+> 说明：鼠标在页面上的位置,从页面左上角开始,即是以页面为参考点,不随滑动条移动而变化。
 ``` javascript
 // 以下为兼容写法
 var touches = e.touches ? e.touches[0] : e;
