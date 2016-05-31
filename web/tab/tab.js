@@ -238,7 +238,7 @@
     };
 
     Tab.prototype = {
-        
+
         _init: function () {
             this._initSize();
             this._initClass();
@@ -257,14 +257,14 @@
             }
             this._translate();
         },
-        
+
         _resize: function () {
             var me = this;
             window.setTimeout(function () {
                 me._initSize();
             }, 100);
         },
-        
+
         _initClass: function () {
             if (this.opts.useDefualtCSS) {
                 utils.addClass(this.menu, 'tab-menu');
@@ -278,7 +278,7 @@
             utils.addClass(this.menus[this.index], this.opts.currentClassName);
             utils.addClass(this.contents[this.index], this.opts.currentClassName);
         },
-        
+
         _initEvent: function (remove) {
             var handler = remove ? utils.removeHandler : utils.addHandler;
             var me = this;
@@ -343,7 +343,7 @@
                 me._transitionEnd(e);
             });
         },
-        
+
         _touchStart: function (e) {
             // React to left mouse button only
             if (utils.eventType[e.type] != 1) {
@@ -373,11 +373,11 @@
             this.touch.disY = 0;
             this.touch.fixed = '';
         },
-        
+
         _touchMove: function (e) {
             if (utils.eventType[e.type] !== this.initiated) {
                 return;
-            }
+            }            
 
             if (this.touch.fixed === 'up') {
                 this.initiated = false;
@@ -404,11 +404,11 @@
             if (this.touch.fixed === 'left') {
                 if ((this.index === 0 && this.touch.disX > 0) || (this.index === this.length - 1 && this.touch.disX < 0)) {
                     this.touch.disX /= 4;
-                }
+                }                
                 this._translate(this.touch.disX - this.index * this.width, true);
             }
         },
-        
+
         _touchEnd: function (e) {
 
             if (!this.initiated) {
@@ -447,11 +447,11 @@
                 }
             }
         },
-        
+
         _transitionEnd: function () {
             this._execEvent('scrollEnd');
         },
-        
+
         _touchClick: function (e) {
             var target = e.target || e.srcElement;
             if (target.nodeType === 1 && target.index !== undefined) {
@@ -471,20 +471,21 @@
                 this._replace();
             }
         },
-        
+
         _replace: function () {
-            utils.addClass(this.menus[this.index],this.opts.currentClassName);
-            utils.addClass(this.contents[this.index],this.opts.currentClassName);
-            utils.removeClass(this.menus[this.oldIndex],this.opts.currentClassName);            
-            utils.removeClass(this.contents[this.oldIndex],this.opts.currentClassName);            
+            utils.addClass(this.menus[this.index], this.opts.currentClassName);
+            utils.addClass(this.contents[this.index], this.opts.currentClassName);
+            utils.removeClass(this.menus[this.oldIndex], this.opts.currentClassName);
+            utils.removeClass(this.contents[this.oldIndex], this.opts.currentClassName);
             this.oldIndex = this.index;
         },
-        
+
         _translate: function (moveX) {
-            var destX = moveX || (-this.index * this.width);
+            var destX = (typeof moveX === 'number') ? moveX : -this.index * this.width;
+            var duration = (typeof moveX === 'number') ? '0' : this.opts.duration;
             if (utils.hasTransform && utils.hasTransition) {
                 this.content.style[utils.prefixStyle('transform')] = 'translateX(' + destX + 'px)';
-                this.content.style[utils.prefixStyle('transition')] = 'all ' + this.opts.duration + 'ms';
+                this.content.style[utils.prefixStyle('transition')] = 'all ' + duration + 'ms';
             } else {
                 this.content.style.left = destX + 'px';
                 if (moveX) {
@@ -494,7 +495,7 @@
                 }
             }
         },
-        
+
         _updatePosition: function () {
             var me = this,
                 startX = me.x || 0,
@@ -526,7 +527,7 @@
             me.isAnimating = true;
             step();
         },
-        
+
         _execEvent: function (type) {
             if (!this._events[type]) {
                 return;
@@ -545,11 +546,6 @@
 
         destroy: function () {
             this._initEvent(true);
-            // TODO
-            // this._initEvents(true);
-            // clearTimeout(this.resizeTimeout);
-            // this.resizeTimeout = null;
-            // this._execEvent('destroy');
         }
     };
 
