@@ -364,7 +364,8 @@
                 return;
             }
 
-            utils.event.preventDefault(e);
+            //utils.event.preventDefault(e);
+
             this.initiated = utils.eventType[e.type];
             this.touch.x = utils.event.pageX(e);
             this.touch.y = utils.event.pageY(e);
@@ -417,7 +418,7 @@
 
             this.initiated = false;
 
-            utils.event.preventDefault(e);
+            //utils.event.preventDefault(e);
             utils.event.stopPropagation(e);
 
             if (this.touch.fixed === 'left') {
