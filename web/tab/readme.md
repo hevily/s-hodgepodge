@@ -3,7 +3,7 @@
 
 ![](http://7xkhp9.com1.z0.glb.clouddn.com/blog/javascript-tabjs/1.jpg)
 
-- [tab.js 百度网盘 下载地址](http://pan.baidu.com/s/1geCdHXh)
+- [tab.js 百度网盘 下载地址](http://pan.baidu.com/s/1bpK9Sr9)
 - [tab.js GitHub Clone 地址](https://github.com/stone0090/code-hodgepodge/tree/master/web/tab) 
 
 一直听说过IE6~IE9浏览器的兼容性问题是深坑，这次终于有所体会，就本次优化tab.js而言，如果不对IE6~IE9进行兼容，工作量可以减少一倍。
