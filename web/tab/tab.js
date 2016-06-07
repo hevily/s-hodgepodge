@@ -176,7 +176,7 @@
             if (this.initiated && utils.eventType[e.type] !== this.initiated) {
                 return;
             }
-
+            
             this.initiated = utils.eventType[e.type];
             this.touch.x = utils.event.pageX(e);
             this.touch.y = utils.event.pageY(e);
