@@ -176,7 +176,7 @@
             if (this.initiated && utils.eventType[e.type] !== this.initiated) {
                 return;
             }
-            
+
             this.initiated = utils.eventType[e.type];
             this.touch.x = utils.event.pageX(e);
             this.touch.y = utils.event.pageY(e);
@@ -525,8 +525,10 @@
     })();
 
     // ie6 ~ ie8 not support trim()
-    String.prototype.trim = function() {
-        return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-    };
+    if (!('trim' in String.prototype)) {
+        String.prototype.trim = function() {
+            return this.replace(/(^\s*)/g, '').replace(/(\s*$)/g, '');
+        };
+    }
 
 })(window, document, Math);
