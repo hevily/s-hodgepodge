@@ -1,0 +1,17 @@
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Service\obj\Debug\ScheduledTask.Service.csprojResolveAssemblyReference.cache
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Service\obj\Debug\ScheduledTask.Service.ProjectInstaller.resources
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Service\obj\Debug\ScheduledTask.Service.csproj.GenerateResource.Cache
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Service\bin\Debug\ScheduledTask.Service.exe
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Service\bin\Debug\ScheduledTask.Service.pdb
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Service\bin\Debug\ScheduledTask.Entity.dll
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Service\bin\Debug\ScheduledTask.Interface.dll
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Service\bin\Debug\ScheduledTask.Entity.pdb
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Service\bin\Debug\ScheduledTask.Interface.pdb
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Service\obj\Debug\ScheduledTask.Service.exe
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Service\obj\Debug\ScheduledTask.Service.pdb
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Service\bin\Debug\InstallUtil.exe
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Service\bin\Debug\InstallUtilLib.dll
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Service\bin\Debug\ScheduledTask.Service.exe.config
+D:\Code\github\stone0090\code-hodgepodge\tools\ScheduledTask\ScheduledTask.Service\bin\Debug\ScheduledTask.Service.exe.config
+D:\Code\github\stone0090\code-hodgepodge\tools\ScheduledTask\ScheduledTask.Service\obj\Debug\ScheduledTask.Service.exe
+D:\Code\github\stone0090\code-hodgepodge\tools\ScheduledTask\ScheduledTask.Service\obj\Debug\ScheduledTask.Service.pdb

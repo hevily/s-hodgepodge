@@ -1,0 +1,9 @@
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Demo\bin\Debug\ScheduledTask.Demo.dll
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Demo\bin\Debug\ScheduledTask.Demo.pdb
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Demo\bin\Debug\ScheduledTask.Entity.dll
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Demo\bin\Debug\ScheduledTask.Interface.dll
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Demo\bin\Debug\ScheduledTask.Entity.pdb
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Demo\bin\Debug\ScheduledTask.Interface.pdb
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Demo\obj\Debug\ScheduledTask.Demo.csprojResolveAssemblyReference.cache
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Demo\obj\Debug\ScheduledTask.Demo.dll
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Demo\obj\Debug\ScheduledTask.Demo.pdb

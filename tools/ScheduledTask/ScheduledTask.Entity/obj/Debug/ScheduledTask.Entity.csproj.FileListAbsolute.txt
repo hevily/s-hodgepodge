@@ -1,0 +1,4 @@
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Entity\bin\Debug\ScheduledTask.Entity.dll
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Entity\bin\Debug\ScheduledTask.Entity.pdb
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Entity\obj\Debug\ScheduledTask.Entity.dll
+C:\Users\stone\Desktop\ScheduledTask\ScheduledTask.Entity\obj\Debug\ScheduledTask.Entity.pdb
