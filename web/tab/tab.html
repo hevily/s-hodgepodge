@@ -3,14 +3,12 @@
 
 <head>
     <title>tab</title>
-    <!-- 优化移动浏览器的显示，缩放比例默认为1，不允许手动缩放。如果不是响应式网站，不要使用initial-scale或者禁用缩放。 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <!-- 页面的编码方式 -->
     <meta charset="utf-8">
     <!-- 优先使用最新版本 IE 和 Chrome -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <!-- 引用CSS资源 -->
-    <link rel="stylesheet" href="tab.css">
+    <!-- 优化移动浏览器的显示，缩放比例默认为1，不允许手动缩放。如果不是响应式网站，不要使用initial-scale或者禁用缩放。 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 </head>
 
 <body>
@@ -35,7 +33,8 @@
         var tab = new Tab({
             wrap: "divWrap",
             menu: "divMenu",
-            content: "divContent"
+            content: "divContent",
+            useDefualtCSS: true
         });
     </script>
 
