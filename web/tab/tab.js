@@ -218,7 +218,7 @@
             duration: 300,
             callback: [],
             selectedClass: 'current',
-            useDefualtCSS: true
+            useDefualtCSS: false
         };
 
         for (var opt in this.defualtOpts) {
@@ -248,7 +248,6 @@
         _initClass: function () {
             if (this.useDefualtCSS) {
                 var width = 100 / this.length;
-
                 document.write('<style>' +
                     'html, body { margin: 0; padding: 0; overflow: hidden; } \r\n' +
                     '.tab-content { position: relative; } \r\n' +
@@ -257,7 +256,6 @@
                     '.tab-menu > div { float: left; width: ' + width + '%; height: 100%; color: #2a70be; line-height: 45px; text-align: center; background: #ECF2F6; border-left: 1px solid #E5E6E7; margin-right: -1px; } \r\n' +
                     '.tab-menu > .current { border-top: 2px solid #2a70be; margin-top: -2px; background: #FFF; color: #c14545; } \r\n' +
                     '</style>');
-
                 utils.addClass(this.menu, 'tab-menu');
                 utils.addClass(this.content, 'tab-content');
             }
@@ -272,11 +270,9 @@
 
         _initSize: function () {
             this.width = document.documentElement.clientWidth || document.body.clientWidth;
+            this.height = document.documentElement.clientHeight || document.body.clientHeight;
             this.content.style.width = this.length * this.width + 'px';
-            if (this.useDefualtCSS) {
-                this.height = document.documentElement.clientHeight || document.body.clientHeight;
-                this.content.style.height = (this.height - 45) + 'px';
-            }
+            this.content.style.height = this.height + 'px';
             for (var i = 0; i < this.length; i++) {
                 this.contents[i].style.width = this.width + 'px';
             }
@@ -383,6 +379,8 @@
                 return;
             }
 
+            utils.event.stopPropagation(e);
+
             var point = e.touches ? e.touches[0] : e;
             if (point.length > 1 || e.scale && e.scale !== 1) {
                 return;
@@ -392,7 +390,7 @@
             this.touch.disY = utils.event.pageY(e) - this.touch.y;
             this.touch.isHorizontalMove = Math.abs(this.touch.disX) > Math.abs(this.touch.disY);
             if (this.touch.isHorizontalMove) {
-
+                utils.event.preventDefault(e);
                 if ((this.index === 0 && this.touch.disX > 0) || (this.index === this.length - 1 && this.touch.disX < 0)) {
                     this.touch.disX /= 4;
                 }
@@ -468,7 +466,7 @@
             var duration = (typeof moveX === 'number') ? '0' : this.duration;
             if (utils.hasTransform && utils.hasTransition) {
                 this.content.style[utils.prefixStyle('transition')] = 'all ' + duration + 'ms';
-                this.content.style[utils.prefixStyle('transform')] = 'translateX(' + destX + 'px)';
+                this.content.style[utils.prefixStyle('transform')] = 'translate3d(' + destX + 'px,0,0)';
             } else {
                 this.content.style.left = destX + 'px';
                 if (moveX) {
