@@ -206,6 +206,10 @@
         this.wrap = document.getElementById(opts.wrap);
         this.menu = document.getElementById(opts.menu);
         this.content = document.getElementById(opts.content);
+        if (!this.wrap || !this.menu || !this.content) {
+            return;
+        }
+
         this.menus = this.menu.children;
         this.contents = this.content.children;
         this.length = this.menus.length;
@@ -222,7 +226,9 @@
         };
 
         for (var opt in this.defualtOpts) {
-            this[opt] = opts[opt] || this.defualtOpts[opt];
+            if (this.defualtOpts.hasOwnProperty(opt)) {
+                this[opt] = opts[opt] || this.defualtOpts[opt];
+            }
         }
 
         if (this.defualtOpts.index > this.length - 1)
