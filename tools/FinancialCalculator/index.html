@@ -1,0 +1,142 @@
+﻿﻿<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title> 金融计算器 </title>
+
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+
+    <!-- No Baidu Siteapp-->
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <link rel="icon" type="image/png" href="assets/i/favicon.png">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="assets/i/app-icon72x72@2x.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="assets/i/app-icon72x72@2x.png">
+    <meta name="msapplication-TileColor" content="#0e90d2">
+
+    <link rel="stylesheet" href="assets/css/amazeui.min.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/amazeui.min.js"></script>
+    <script src="assets/js/amazeui.widgets.helper.min.js"></script>
+
+    <script type="text/javascript">
+
+        function cal1() {
+            var interestRate = ($("#txtInterestRate1").val() / $("#txtRepeatTime1").val()) / 100 + 1;
+            var time = $("#txtRepeatTime1").val() * $("#txtTimeHour1").val();
+            $("#txtResult1").val(recursionCal1(interestRate, time, $("#txtAmount1").val()));
+        }
+        function recursionCal1(interestRate, time, amount) {
+            if (time == 1)
+                return amount * interestRate;
+            else
+                return recursionCal1(interestRate, time - 1, amount) * interestRate;
+        }
+
+        function cal2() {
+            var time = $("#txtTimeHour2").val() * 12;
+            var newInterestRate = $("#txtInterestRate2").val() / 12 / 100 + 1;
+            $("#txtResult2").val(recursionCal2(newInterestRate, time, $("#txtAmount2").val() * 1));
+        }
+        function recursionCal2(interestRate, time, amount) {
+            if (time == 1)
+                return amount * interestRate;
+            else
+                return (recursionCal2(interestRate, time - 1, amount) + amount) * interestRate;
+        }
+
+        function show(i) {
+            $("form").hide();
+            $("#form" + i).show();
+            $("#aTitle").html(i == "1" ? "复利计算器" : "定投计算器");
+            $(".am-offcanvas").offCanvas('close');
+        }
+        $(function () {
+            show("1");
+        });
+
+    </script>
+</head>
+<body>
+    <!--[if lte IE 9]>
+    <p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，网站暂不支持。请<a href="http://browsehappy.com/" target="_blank">升级浏览器</a>以获得更好的体验！</p>
+    <![endif]-->
+    <header data-am-widget="header" class="am-header am-header-default">
+        <div class="am-header-left am-header-nav">
+            <a href="#left-link" class="">
+                <i class="am-header-icon am-icon-home"></i>
+            </a>
+        </div>
+        <h1 class="am-header-title">
+            <a id="aTitle" href="#title-link" class="">复利计算器</a>
+        </h1>
+    </header>
+    <nav data-am-widget="menu" class="am-menu  am-menu-offcanvas2" data-am-menu-offcanvas>
+        <a href="javascript: void(0)" class="am-menu-toggle">
+            <i class="am-menu-toggle-icon am-icon-bars"></i>
+        </a>
+        <div class="am-offcanvas">
+            <div class="am-offcanvas-bar am-offcanvas-bar-flip">
+                <ul class="am-menu-nav am-avg-sm-2">
+                    <li class="">
+                        <a href="##" class="" onclick="show('1');">复利计算器</a>
+                    </li>
+                    <li class="">
+                        <a href="##" class="" onclick="show('2');">定投计算器</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br />
+    <div class="am-g">
+        <div id="divCal1" class="am-u-md-8 am-u-sm-centered">
+            <form id="form1" class="am-form">
+                <fieldset class="am-form-set">
+                    <label for="txtAmount1">投资金额</label>
+                    <input type="number" placeholder="投资金额" id="txtAmount1" value="60000" />
+                    <label for="txtTimeHour1">投资年限</label>
+                    <input type="number" placeholder="投资年限" id="txtTimeHour1" value="5" />
+                    <label for="txtRepeatTime1">年复利次数</label>
+                    <input type="number" placeholder="年复利次数" id="txtRepeatTime1" value="1" />
+                    <label for="txtInterestRate1">年收益率（%）</label>
+                    <input type="number" placeholder="年收益率（%）" id="txtInterestRate1" value="8" />
+                    <label for="txtResult1">投资总收益</label>
+                    <input type="number" placeholder="投资总收益" id="txtResult1" /><br />
+                    <button type="button" id="btnCal1" class="am-btn am-btn-primary am-btn-block" onclick=" cal1(); ">计算</button>
+                </fieldset>
+            </form>
+            <form id="form2" class="am-form">
+                <fieldset class="am-form-set">
+                    <label for="txtAmount2">每月定投金额</label>
+                    <input type="number" placeholder="每月定投金额" id="txtAmount2" value="1000" />
+                    <label for="txtTimeHour2">投资年限</label>
+                    <input type="number" placeholder="投资年限" id="txtTimeHour2" value="5" />
+                    <label for="txtInterestRate2">年收益率（%）</label>
+                    <input type="number" placeholder="年收益率（%）" id="txtInterestRate2" value="8" />
+                    <label for="txtResult2">投资总收益</label>
+                    <input type="number" placeholder="投资总收益" id="txtResult2" /><br />
+                    <button type="button" id="btnCal2" class="am-btn am-btn-primary am-btn-block" onclick=" cal2(); ">计算</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
