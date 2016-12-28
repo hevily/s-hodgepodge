@@ -107,6 +107,7 @@ namespace OfficeTool
         {
             if (webBrowser1.Url.AbsoluteUri == _checkinUrl)
             {
+                WriteLog("开始监听");
                 AutoCheckInCheckOut();
             }
         }
@@ -142,7 +143,8 @@ namespace OfficeTool
             this.textBox3.Text = GetIniValue("checkintime");
             this.textBox4.Text = GetIniValue("checkouttime");
             this.textBox5.Text = GetIniValue("offsettime");
-            this.comboBox1.SelectedIndex = int.Parse(GetIniValue("checkintype"));
+            if (!string.IsNullOrEmpty(GetIniValue("checkintype")))
+                this.comboBox1.SelectedIndex = int.Parse(GetIniValue("checkintype"));
 
             ReadLog();
 
