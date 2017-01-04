@@ -84,7 +84,7 @@ namespace OfficeTool
                     int gray = (int)(color.R * 0.3 + color.G * 0.59 + color.B * 0.11);
 
                     //二值化，v为阈值，大于等于阈值的设为白色，否者设为黑色
-                    if (gray * 0.2125 + gray * 0.7154 + gray * 0.0721 >= 100)
+                    if (gray * 0.2125 + gray * 0.7154 + gray * 0.0721 >= 150)
                     {
                         bmp.SetPixel(i, j, Color.FromArgb(255, 255, 255));
                     }

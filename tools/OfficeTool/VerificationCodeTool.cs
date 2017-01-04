@@ -31,7 +31,7 @@ namespace OfficeTool
             var id = ConfigurationManager.AppSettings["ImgId"];
 
             var img = webBrowser1.Document.GetElementById(id);
-            img.InvokeMember("click");   
+            img.InvokeMember("click");
 
             HTMLDocument html = (HTMLDocument)this.webBrowser1.Document.DomDocument;
             IHTMLControlElement img2 = (IHTMLControlElement)webBrowser1.Document.Images[id].DomElement;
@@ -43,7 +43,6 @@ namespace OfficeTool
             if (Clipboard.ContainsImage())
             {
                 pictureBox1.Image = Clipboard.GetImage();
-
             }
             else
             {
@@ -70,6 +69,17 @@ namespace OfficeTool
             }
         }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var fbd = new FolderBrowserDialog();
+            var result = fbd.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                var name = fbd.SelectedPath + "/" + Guid.NewGuid() + ".jpg";
+                pictureBox1.Image.Save(name);
+                MessageBox.Show("保存成功");
+            }
+        }
     }
 }
 
