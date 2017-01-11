@@ -1,5 +1,5 @@
 []
-checkintime=0825
-checkouttime=1645
+checkintime=
+checkouttime=
 offsettime=5
 checkintype=0

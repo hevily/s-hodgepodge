@@ -11,6 +11,7 @@ using mshtml;
 using System.Runtime.InteropServices;
 using System.Configuration;
 using System.IO;
+using System.Diagnostics;
 
 namespace OfficeTool
 {
@@ -19,8 +20,9 @@ namespace OfficeTool
         #region 全局变量
 
         private string _logFilePath = string.Empty;
-        private string _iniFilePath = string.Empty;
-        private string _iniFileSection = string.Empty;
+        private string _txtFilePath = string.Empty;
+        private string _txtNotWorkDay = string.Empty;
+        private string _txtFileSection = string.Empty;
         private string _checkinUrl = string.Empty;
 
         private int _timeInterval = 30000;
@@ -34,6 +36,8 @@ namespace OfficeTool
         private bool _isCheckOut = false;
         private bool _isCheckIning = false;
         private bool _isCheckOuting = false;
+        private bool _isListening = false;
+
 
         private List<string> _listNotWorkDay = null;
         private string _checkInRepeat = string.Empty;
@@ -42,6 +46,8 @@ namespace OfficeTool
         private string _checkOutSuccess = string.Empty;
 
         private string _checkInType = string.Empty;
+
+        private string _currentUrl = string.Empty;
 
         #endregion
 
@@ -86,6 +92,7 @@ namespace OfficeTool
                 SetIniValue("offsettime", this.textBox5.Text);
                 SetIniValue("checkintype", this.comboBox1.SelectedIndex.ToString());
                 WriteLog("保存成功");
+                webBrowser1.Navigate(new Uri(_checkinUrl));
             }
             else
             {
@@ -103,10 +110,22 @@ namespace OfficeTool
             {
             }
         }
+        private void btnModifyNonWorkDay_Click(object sender, EventArgs e)
+        {
+            Process.Start(_txtNotWorkDay);
+        }
         private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            if (webBrowser1.Url.AbsoluteUri == _checkinUrl)
+            string errMsg = ValidateInput();
+            if (!string.IsNullOrEmpty(errMsg))
             {
+                MessageBox.Show(errMsg);
+                return;
+            }
+
+            if (webBrowser1.Url.AbsoluteUri == _checkinUrl && !_isListening)
+            {
+                _isListening = true;
                 WriteLog("开始监听");
                 AutoCheckInCheckOut();
             }
@@ -116,11 +135,12 @@ namespace OfficeTool
         {
             // 读取配置文件
             _logFilePath = Path.Combine(Application.StartupPath, ConfigurationManager.AppSettings["LogFileName"]);
-            _iniFilePath = Path.Combine(Application.StartupPath, ConfigurationManager.AppSettings["IniFileName"]);
-            _iniFileSection = ConfigurationManager.AppSettings["IniFileSection"];
+            _txtFilePath = Path.Combine(Application.StartupPath, ConfigurationManager.AppSettings["IniFileName"]);
+            _txtNotWorkDay = Path.Combine(Application.StartupPath, ConfigurationManager.AppSettings["IniNotWorkDay"]);
+            _txtFileSection = ConfigurationManager.AppSettings["IniFileSection"];
             _checkinUrl = ConfigurationManager.AppSettings["CheckinUrl"];
 
-            _listNotWorkDay = GetWorkDayList(Path.Combine(Application.StartupPath, ConfigurationManager.AppSettings["NotWorkDay"]));
+            _listNotWorkDay = GetWorkDayList(_txtNotWorkDay);
             _checkInRepeat = ConfigurationManager.AppSettings["CheckInRepeat"];
             _checkInSuccess = ConfigurationManager.AppSettings["CheckInSuccess"];
             _checkOutEarly = ConfigurationManager.AppSettings["CheckOutEarly"];
@@ -148,12 +168,6 @@ namespace OfficeTool
 
             ReadLog();
 
-            string errMsg = ValidateInput();
-            if (!string.IsNullOrEmpty(errMsg))
-            {
-                MessageBox.Show(errMsg);
-                return;
-            }
         }
         private string ValidateInput()
         {
@@ -289,12 +303,12 @@ namespace OfficeTool
             if (_isCheckIning)
             {
                 var html = webBrowser1.Document.Window.Document.Body.InnerHtml;
-                if (html.Contains(_checkInSuccess))
+                if (html.Contains(_checkInSuccess + @"</div>"))
                 {
                     WriteLog("签到成功");
                     _isCheckIn = true;
                 }
-                else if (html.Contains(_checkInRepeat))
+                else if (html.Contains(_checkInRepeat + @"</div>"))
                 {
                     WriteLog("重复签到");
                     _isCheckIn = true;
@@ -312,12 +326,12 @@ namespace OfficeTool
             if (_isCheckOuting)
             {
                 var html = webBrowser1.Document.Window.Document.Body.InnerHtml;
-                if (html.Contains(_checkOutEarly))
+                if (html.Contains(_checkOutEarly + @"</div>"))
                 {
                     WriteLog("您已早退");
                     _isCheckOut = false;
                 }
-                else if (html.Contains(_checkOutSuccess))
+                else if (html.Contains(_checkOutSuccess + @"</div>"))
                 {
                     WriteLog("签退成功");
                     _isCheckOut = true;
@@ -384,10 +398,22 @@ namespace OfficeTool
             }
             _oldTime = now;
 
+            // 签到之前刷新页面
+            if (!_isCheckIn && now > dtCheckIn.AddMinutes(-2) && now < dtCheckIn)
+            {
+                webBrowser1.Navigate(new Uri(_checkinUrl));
+            }
+
             // 自动签到
             if (!_isCheckIn && now > dtCheckIn && _isCheckInCount < _checkInOutTimes)
             {
                 CheckIn();
+            }
+
+            // 签退之前刷新页面
+            if (!_isCheckOut && now > dtCheckOut.AddMinutes(-2) && now < dtCheckOut)
+            {
+                webBrowser1.Navigate(new Uri(_checkinUrl));
             }
 
             // 自动签退
@@ -479,7 +505,6 @@ namespace OfficeTool
             return list;
         }
 
-
         #region 操作ini文件
 
         /// <summary>
@@ -508,12 +533,12 @@ namespace OfficeTool
 
         private void SetIniValue(string key, string val)
         {
-            if (!File.Exists(_iniFilePath))
+            if (!File.Exists(_txtFilePath))
             {
-                using (File.Create(_iniFilePath)) { }
+                using (File.Create(_txtFilePath)) { }
             }
 
-            var result = WritePrivateProfileString(_iniFileSection, key, val, _iniFilePath);
+            var result = WritePrivateProfileString(_txtFileSection, key, val, _txtFilePath);
         }
 
         /// <summary>
@@ -524,15 +549,21 @@ namespace OfficeTool
         /// <returns></returns>
         private string GetIniValue(string key)
         {
-            if (!File.Exists(_iniFilePath))
+            if (!File.Exists(_txtFilePath))
             {
-                using (File.Create(_iniFilePath)) { }
+                using (File.Create(_txtFilePath)) { }
             }
 
             StringBuilder temp = new StringBuilder(1024);
-            GetPrivateProfileString(_iniFileSection, key, "", temp, 1024, _iniFilePath);
+            GetPrivateProfileString(_txtFileSection, key, "", temp, 1024, _txtFilePath);
             return temp.ToString();
         }
+
+
+
+
+
+
 
         #endregion
 

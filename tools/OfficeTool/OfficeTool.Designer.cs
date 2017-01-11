@@ -51,6 +51,9 @@
             this.label8 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
+            this.btnModifyNonWorkDay = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // webBrowser1
@@ -90,7 +93,7 @@
             this.textBox3.Location = new System.Drawing.Point(76, 72);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(100, 21);
-            this.textBox3.TabIndex = 9;
+            this.textBox3.TabIndex = 9;            
             // 
             // label3
             // 
@@ -106,7 +109,7 @@
             this.textBox4.Location = new System.Drawing.Point(76, 103);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(100, 21);
-            this.textBox4.TabIndex = 11;
+            this.textBox4.TabIndex = 11;            
             // 
             // label4
             // 
@@ -122,7 +125,7 @@
             this.textBox5.Location = new System.Drawing.Point(76, 134);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(66, 21);
-            this.textBox5.TabIndex = 13;
+            this.textBox5.TabIndex = 13;            
             // 
             // label5
             // 
@@ -157,10 +160,10 @@
             this.richTextBox1.Location = new System.Drawing.Point(183, 41);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(272, 183);
+            this.richTextBox1.Size = new System.Drawing.Size(272, 151);
             this.richTextBox1.TabIndex = 16;
-            this.richTextBox1.Text = "实际签到时间 = 签到时间 - 偏差时间\n实际签退时间 = 签退时间 + 偏差时间\n\n更新：新增非工作日排除功能，如需休假可手动维护 NotWorkDay.ini" +
-    " 文件（修改后需重启本程序）\n\n更新：签到失败，会重复签到，直到成功为止\n\n更新：新增值班类型";
+            this.richTextBox1.Text = "使用前，请确保下面信息填写完整，例如：\n- 签到时间：0825\n- 签退时间：1645\n\n备注：\n- 实际签到时间 = 签到时间 - 偏差时间\n- 实际签退时间 " +
+    "= 签退时间 + 偏差时间\n- 日志输出“开始监听”，才算运行成功";
             // 
             // btnCheckIn
             // 
@@ -245,11 +248,44 @@
             this.label9.TabIndex = 24;
             this.label9.Text = "配置：";
             // 
+            // btnModifyNonWorkDay
+            // 
+            this.btnModifyNonWorkDay.Location = new System.Drawing.Point(183, 199);
+            this.btnModifyNonWorkDay.Name = "btnModifyNonWorkDay";
+            this.btnModifyNonWorkDay.Size = new System.Drawing.Size(110, 25);
+            this.btnModifyNonWorkDay.TabIndex = 25;
+            this.btnModifyNonWorkDay.Text = "修改非工作日";
+            this.btnModifyNonWorkDay.UseVisualStyleBackColor = true;
+            this.btnModifyNonWorkDay.Click += new System.EventHandler(this.btnModifyNonWorkDay_Click);
+            // 
+            // button2
+            // 
+            this.button2.Enabled = false;
+            this.button2.Location = new System.Drawing.Point(299, 199);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 25);
+            this.button2.TabIndex = 26;
+            this.button2.Text = "功能待定";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Enabled = false;
+            this.button1.Location = new System.Drawing.Point(380, 199);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 25);
+            this.button1.TabIndex = 27;
+            this.button1.Text = "功能待定";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // OfficeTool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(700, 507);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btnModifyNonWorkDay);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.label8);
@@ -302,6 +338,9 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button btnModifyNonWorkDay;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button1;
     }
 }
 
