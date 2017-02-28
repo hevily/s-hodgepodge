@@ -52,7 +52,10 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.btnModifyNonWorkDay = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -61,16 +64,18 @@
             this.webBrowser1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.webBrowser1.Location = new System.Drawing.Point(16, 232);
+            this.webBrowser1.Location = new System.Drawing.Point(16, 265);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(439, 263);
+            this.webBrowser1.Size = new System.Drawing.Size(557, 343);
             this.webBrowser1.TabIndex = 0;
             this.webBrowser1.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser1_DocumentCompleted);
+            this.webBrowser1.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.webBrowser1_Navigated);
+            this.webBrowser1.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.webBrowser1_Navigating);
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(17, 167);
+            this.btnSave.Location = new System.Drawing.Point(18, 234);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 25);
             this.btnSave.TabIndex = 1;
@@ -80,7 +85,7 @@
             // 
             // btnClearLog
             // 
-            this.btnClearLog.Location = new System.Drawing.Point(102, 167);
+            this.btnClearLog.Location = new System.Drawing.Point(102, 234);
             this.btnClearLog.Name = "btnClearLog";
             this.btnClearLog.Size = new System.Drawing.Size(75, 25);
             this.btnClearLog.TabIndex = 2;
@@ -90,15 +95,15 @@
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(76, 72);
+            this.textBox3.Location = new System.Drawing.Point(76, 74);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(100, 21);
-            this.textBox3.TabIndex = 9;            
+            this.textBox3.TabIndex = 9;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(16, 76);
+            this.label3.Location = new System.Drawing.Point(16, 78);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 12);
             this.label3.TabIndex = 8;
@@ -106,15 +111,15 @@
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(76, 103);
+            this.textBox4.Location = new System.Drawing.Point(76, 106);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(100, 21);
-            this.textBox4.TabIndex = 11;            
+            this.textBox4.TabIndex = 11;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(16, 107);
+            this.label4.Location = new System.Drawing.Point(16, 110);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(53, 12);
             this.label4.TabIndex = 10;
@@ -122,15 +127,15 @@
             // 
             // textBox5
             // 
-            this.textBox5.Location = new System.Drawing.Point(76, 134);
+            this.textBox5.Location = new System.Drawing.Point(76, 138);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(66, 21);
-            this.textBox5.TabIndex = 13;            
+            this.textBox5.TabIndex = 13;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(16, 138);
+            this.label5.Location = new System.Drawing.Point(16, 142);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(53, 12);
             this.label5.TabIndex = 12;
@@ -139,7 +144,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(148, 138);
+            this.label6.Location = new System.Drawing.Point(148, 142);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(29, 12);
             this.label6.TabIndex = 14;
@@ -148,7 +153,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(16, 160);
+            this.label7.Location = new System.Drawing.Point(16, 158);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(0, 12);
             this.label7.TabIndex = 15;
@@ -160,14 +165,14 @@
             this.richTextBox1.Location = new System.Drawing.Point(183, 41);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(272, 151);
+            this.richTextBox1.Size = new System.Drawing.Size(390, 181);
             this.richTextBox1.TabIndex = 16;
-            this.richTextBox1.Text = "使用前，请确保下面信息填写完整，例如：\n- 签到时间：0825\n- 签退时间：1645\n\n备注：\n- 实际签到时间 = 签到时间 - 偏差时间\n- 实际签退时间 " +
-    "= 签退时间 + 偏差时间\n- 日志输出“开始监听”，才算运行成功";
+            this.richTextBox1.Text = "使用前，请确保下面信息填写完整，并点击【保存配置】：\n- 签到时间：0825\n- 签退时间：1645\n- 工号：123456\n- 密码：654321\n\n备注：\n-" +
+    " 实际签到时间 = 签到时间 - 偏差时间\n- 实际签退时间 = 签退时间 + 偏差时间\n- 日志输出“开始监听”，才算运行成功";
             // 
             // btnCheckIn
             // 
-            this.btnCheckIn.Location = new System.Drawing.Point(17, 199);
+            this.btnCheckIn.Location = new System.Drawing.Point(286, 234);
             this.btnCheckIn.Name = "btnCheckIn";
             this.btnCheckIn.Size = new System.Drawing.Size(75, 25);
             this.btnCheckIn.TabIndex = 17;
@@ -177,7 +182,7 @@
             // 
             // btnCheckOut
             // 
-            this.btnCheckOut.Location = new System.Drawing.Point(102, 199);
+            this.btnCheckOut.Location = new System.Drawing.Point(369, 234);
             this.btnCheckOut.Name = "btnCheckOut";
             this.btnCheckOut.Size = new System.Drawing.Size(75, 25);
             this.btnCheckOut.TabIndex = 18;
@@ -196,10 +201,10 @@
             // 
             this.richTextBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.richTextBox2.Location = new System.Drawing.Point(461, 41);
+            this.richTextBox2.Location = new System.Drawing.Point(579, 41);
             this.richTextBox2.Name = "richTextBox2";
             this.richTextBox2.ReadOnly = true;
-            this.richTextBox2.Size = new System.Drawing.Size(227, 454);
+            this.richTextBox2.Size = new System.Drawing.Size(227, 567);
             this.richTextBox2.TabIndex = 19;
             this.richTextBox2.Text = "";
             // 
@@ -215,7 +220,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(459, 20);
+            this.label2.Location = new System.Drawing.Point(599, 20);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(41, 12);
             this.label2.TabIndex = 21;
@@ -250,41 +255,67 @@
             // 
             // btnModifyNonWorkDay
             // 
-            this.btnModifyNonWorkDay.Location = new System.Drawing.Point(183, 199);
+            this.btnModifyNonWorkDay.Location = new System.Drawing.Point(469, 234);
             this.btnModifyNonWorkDay.Name = "btnModifyNonWorkDay";
-            this.btnModifyNonWorkDay.Size = new System.Drawing.Size(110, 25);
+            this.btnModifyNonWorkDay.Size = new System.Drawing.Size(103, 25);
             this.btnModifyNonWorkDay.TabIndex = 25;
             this.btnModifyNonWorkDay.Text = "修改非工作日";
             this.btnModifyNonWorkDay.UseVisualStyleBackColor = true;
             this.btnModifyNonWorkDay.Click += new System.EventHandler(this.btnModifyNonWorkDay_Click);
             // 
-            // button2
+            // textBox1
             // 
-            this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(299, 199);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 25);
-            this.button2.TabIndex = 26;
-            this.button2.Text = "功能待定";
-            this.button2.UseVisualStyleBackColor = true;
+            this.textBox1.Location = new System.Drawing.Point(77, 170);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 21);
+            this.textBox1.TabIndex = 27;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(17, 174);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(53, 12);
+            this.label10.TabIndex = 26;
+            this.label10.Text = "工　　号";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(77, 201);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(100, 21);
+            this.textBox2.TabIndex = 29;
+            this.textBox2.UseSystemPasswordChar = true;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(17, 205);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(53, 12);
+            this.label11.TabIndex = 28;
+            this.label11.Text = "密　　码";
             // 
             // button1
             // 
-            this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(380, 199);
+            this.button1.Location = new System.Drawing.Point(203, 234);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 25);
-            this.button1.TabIndex = 27;
-            this.button1.Text = "功能待定";
+            this.button1.TabIndex = 30;
+            this.button1.Text = "手动登录";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // OfficeTool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(700, 507);
+            this.ClientSize = new System.Drawing.Size(818, 620);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.btnModifyNonWorkDay);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.comboBox1);
@@ -339,7 +370,10 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button btnModifyNonWorkDay;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button button1;
     }
 }

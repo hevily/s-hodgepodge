@@ -14,12 +14,12 @@ using System.IO;
 
 namespace OfficeTool
 {
-    public partial class VerificationCodeTool : Form
+    public partial class VerifyCodeTool_Checkin : Form
     {
 
         Dictionary<string, string> _result;
 
-        public VerificationCodeTool()
+        public VerifyCodeTool_Checkin()
         {
             InitializeComponent();
             webBrowser1.Navigate(new Uri(ConfigurationManager.AppSettings["CheckinUrl"]));
@@ -51,20 +51,20 @@ namespace OfficeTool
 
             Clipboard.Clear();
 
-            pictureBox2.Image = VerificationCode.ProcessBmp(new Bitmap(pictureBox1.Image));
-            textBox1.Text = VerificationCode.Spot(new Bitmap(pictureBox1.Image), 4);
+            pictureBox2.Image = VerifyCode_Checkin.ProcessBmp(new Bitmap(pictureBox1.Image));
+            textBox1.Text = VerifyCode_Checkin.Spot(new Bitmap(pictureBox1.Image), 4);
 
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var list = VerificationCode.SegmentBmp(new Bitmap(pictureBox2.Image));
+            var list = VerifyCode_Checkin.SegmentBmp(new Bitmap(pictureBox2.Image));
             if (!string.IsNullOrEmpty(textBox1.Text) && list != null)
             {
                 var arr = textBox1.Text.ToCharArray();
                 for (int i = 0; i < arr.Length; i++)
                 {
-                    VerificationCode.WriteDB(arr[i].ToString(), list[i]);
+                    VerifyCode_Checkin.WriteDB(arr[i].ToString(), list[i]);
                 }
             }
         }

@@ -1,6 +1,6 @@
 ﻿namespace OfficeTool
 {
-    partial class VerificationCodeTool
+    partial class VerifyCodeTool_Checkin
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VerificationCodeTool));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VerifyCodeTool_Checkin));
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.label7 = new System.Windows.Forms.Label();
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();

