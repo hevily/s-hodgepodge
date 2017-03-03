@@ -14,6 +14,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Net;
 using System.Collections.Specialized;
+using System.Collections;
 
 namespace OfficeTool
 {
@@ -130,7 +131,8 @@ namespace OfficeTool
         {
             if (webBrowser1.Url.AbsoluteUri.Contains("/sso/notice/show"))
             {
-                webBrowser1.Navigate(new Uri(_checkinUrl));
+                Thread thread = new Thread(FindAndCloseWindow);
+                thread.Start();
             }
         }
         private void webBrowser1_Navigating(object sender, WebBrowserNavigatingEventArgs e)
@@ -150,12 +152,12 @@ namespace OfficeTool
             {
                 if (_isLoginCount < 3)
                     Login();
-            }
+            }            
 
             if (webBrowser1.Url.AbsoluteUri == _checkinUrl && !_isListening)
             {
                 _timer.Start();
-                _isListening = true;
+                _isListening = true;                
                 WriteLog("开始监听");
             }
 
@@ -204,9 +206,10 @@ namespace OfficeTool
             this.textBox5.Text = GetIniValue("offsettime");
             if (!string.IsNullOrEmpty(GetIniValue("checkintype")))
                 this.comboBox1.SelectedIndex = int.Parse(GetIniValue("checkintype"));
-
             try { File.Delete(_logFilePath); } catch { }
+
             send();
+
         }
         private string ValidateInput()
         {
@@ -371,10 +374,10 @@ namespace OfficeTool
         }
         private void GetResult2()
         {
-            Thread.Sleep(_delayResult);
-
             try
             {
+                Thread.Sleep(_delayResult);
+
                 if (webBrowser1.InvokeRequired)
                 {
                     this.webBrowser1.Invoke(new MethodInvoker(delegate { GetResult3(); }));
@@ -439,7 +442,7 @@ namespace OfficeTool
 
             if (_isLogining)
             {
-                if (webBrowser1.Url.AbsoluteUri == _checkinUrl)
+                if (webBrowser1.Url.AbsoluteUri.Contains("/sso/notice/show"))
                 {
                     WriteLog("登录成功");
                 }
@@ -451,6 +454,11 @@ namespace OfficeTool
 
                 _isLogining = false;
             }
+        }
+        private void FindAndCloseWindow()
+        {
+            Thread.Sleep(_delayResult);
+            User32API.FindAndCloseWindow(ConfigurationManager.AppSettings["ModalWindowName"]);
         }
 
         private void _timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -699,20 +707,107 @@ namespace OfficeTool
             return temp.ToString();
         }
 
-
-
-
-
-
-
-
-
-
-
-
-        #endregion
-
-
+        #endregion        
     }
+
+    public class User32API
+    {
+        const int WM_CLOSE = 0x0010;
+        private static Hashtable processWnd = null;
+        public delegate bool WNDENUMPROC(IntPtr hwnd, uint lParam);
+        static User32API()
+        {
+            if (processWnd == null)
+            {
+                processWnd = new Hashtable();
+            }
+        }
+        [DllImport("user32.dll", EntryPoint = "EnumWindows", SetLastError = true)]
+        public static extern bool EnumWindows(WNDENUMPROC lpEnumFunc, uint lParam);
+        [DllImport("user32.dll", EntryPoint = "GetParent", SetLastError = true)]
+        public static extern IntPtr GetParent(IntPtr hWnd);
+        [DllImport("user32.dll", EntryPoint = "GetWindowThreadProcessId")]
+        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, ref uint lpdwProcessId);
+        [DllImport("user32.dll", EntryPoint = "IsWindow")]
+        public static extern bool IsWindow(IntPtr hWnd);
+        [DllImport("kernel32.dll", EntryPoint = "SetLastError")]
+        public static extern void SetLastError(uint dwErrCode);
+        [DllImport("User32.dll", EntryPoint = "SendMessage")]
+        private static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [DllImport("user32.dll", EntryPoint = "FindWindow")]
+        private extern static IntPtr FindWindow(string lpClassName, string lpWindowName);
+        public static IntPtr GetCurrentWindowHandle()
+        {
+            try
+            {
+
+                IntPtr ptrWnd = IntPtr.Zero;
+                uint uiPid = (uint)Process.GetCurrentProcess().Id;  // 当前进程 ID
+                object objWnd = processWnd[uiPid];
+                if (objWnd != null)
+                {
+                    ptrWnd = (IntPtr)objWnd;
+                    if (ptrWnd != IntPtr.Zero && IsWindow(ptrWnd))  // 从缓存中获取句柄
+                    {
+                        return ptrWnd;
+                    }
+                    else
+                    {
+                        ptrWnd = IntPtr.Zero;
+                    }
+                }
+                bool bResult = EnumWindows(new WNDENUMPROC(EnumWindowsProc), uiPid);
+                // 枚举窗口返回 false 并且没有错误号时表明获取成功
+                if (!bResult && Marshal.GetLastWin32Error() == 0)
+                {
+                    objWnd = processWnd[uiPid];
+                    if (objWnd != null)
+                    {
+                        ptrWnd = (IntPtr)objWnd;
+                    }
+                }
+
+                return ptrWnd;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        private static bool EnumWindowsProc(IntPtr hwnd, uint lParam)
+        {
+            uint uiPid = 0;
+            if (GetParent(hwnd) == IntPtr.Zero)
+            {
+                GetWindowThreadProcessId(hwnd, ref uiPid);
+                if (uiPid == lParam)    // 找到进程对应的主窗口句柄
+                {
+                    processWnd[uiPid] = hwnd;   // 把句柄缓存起来
+                    SetLastError(0);    // 设置无错误
+                    return false;   // 返回 false 以终止枚举窗口
+                }
+            }
+            return true;
+        }
+        public static void FindAndCloseWindow(string lpWindowName)
+        {
+            try
+            {
+                IntPtr ptrWnd = FindWindow(null, lpWindowName);
+                if (ptrWnd != IntPtr.Zero)
+                {
+                    SendMessage(ptrWnd, WM_CLOSE, 0, 0);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+    }
+
 }
 
